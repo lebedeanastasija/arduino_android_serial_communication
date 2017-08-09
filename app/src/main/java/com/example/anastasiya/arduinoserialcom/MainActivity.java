@@ -24,22 +24,35 @@ import java.util.Set;
 import java.io.UnsupportedEncodingException;
 
 public class MainActivity extends AppCompatActivity {
-    UsbManager usbManager;
+    /*UsbManager usbManager;
     String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
     UsbDevice device;
     UsbSerialDevice serialPort;
     UsbDeviceConnection connection;
     Button startButton;
     Button stopButton;
-    TextView textView;
+    TextView textView;*/
+    protected static final String TAG = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
+        HashMap<String, UsbDevice> deviceList = manager.getDeviceList();
+        Iterator<UsbDevice> deviceIterator = deviceList.values().iterator();
+        while(deviceIterator.hasNext()){
+            UsbDevice device = deviceIterator.next();
+            String s = device.getDeviceName();
+            int pid = device.getProductId();
+            int vid = device.getVendorId();
+            TextView tv = (TextView) findViewById(R.id.textView);
+            tv.setText("Device name: " + s + "\n" + "Product id: " +Integer.toString(pid) + "\n" + "Vendor id: " + Integer.toString(vid));
+        }
     }
 
-    public void onClickStart(View view) {
+    /*public void onClickStart(View view) {
         usbManager = (UsbManager)getSystemService(Context.USB_SERVICE);
         startButton = (Button)view.findViewById(R.id.buttonStart);
         stopButton = (Button)view.findViewById(R.id.buttonStop);
@@ -65,11 +78,11 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         }
-    }
+    }*/
 
     private void tvAppend(TextView tv, CharSequence text) { final TextView ftv = tv; final CharSequence ftext = text; runOnUiThread(new Runnable() { @Override public void run() { ftv.append(ftext); } }); }
 
-    UsbSerialInterface.UsbReadCallback mCallback = new UsbSerialInterface.UsbReadCallback() {
+    /*UsbSerialInterface.UsbReadCallback mCallback = new UsbSerialInterface.UsbReadCallback() {
         //Defining a Callback which triggers whenever data is read.
         @Override
         public void onReceivedData(byte[] arg0) {
@@ -129,5 +142,5 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickStop(View view) {
         serialPort.close();
-    }
+    }*/
 }
