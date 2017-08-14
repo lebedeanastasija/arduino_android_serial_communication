@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
@@ -24,100 +25,91 @@ import java.util.Set;
 import java.io.UnsupportedEncodingException;
 
 public class MainActivity extends AppCompatActivity {
-    /*UsbManager usbManager;
-    String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
-    UsbDevice device;
-    UsbSerialDevice serialPort;
-    UsbDeviceConnection connection;
-    Button startButton;
-    Button stopButton;
-    TextView textView;*/
+    TextView tv;
+    private static String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
     protected static final String TAG = null;
+
+    UsbManager usbManager;
+    UsbDevice device;
+    UsbDeviceConnection connection;
+    UsbSerialDevice serialPort;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        tv = (TextView) findViewById(R.id.textView);
+        tv.setText("");
+        usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
+    }
 
-        UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
-        HashMap<String, UsbDevice> deviceList = manager.getDeviceList();
+    public void connectUsbDevice() {
+        HashMap<String, UsbDevice> deviceList = usbManager.getDeviceList();
         Iterator<UsbDevice> deviceIterator = deviceList.values().iterator();
+        IntentFilter deviceAttachedFilter = new IntentFilter(UsbManager.ACTION_USB_DEVICE_ATTACHED);
+        IntentFilter deviceUsbPermissions = new IntentFilter(ACTION_USB_PERMISSION);
+        registerReceiver(broadcastReceiver, deviceAttachedFilter);
+        registerReceiver(broadcastReceiver, deviceUsbPermissions);
         while(deviceIterator.hasNext()){
-            UsbDevice device = deviceIterator.next();
+            device = deviceIterator.next();
             String s = device.getDeviceName();
             int pid = device.getProductId();
-            int vid = device.getVendorId();
-            TextView tv = (TextView) findViewById(R.id.textView);
-            tv.setText("Device name: " + s + "\n" + "Product id: " +Integer.toString(pid) + "\n" + "Vendor id: " + Integer.toString(vid));
+            if(pid == 29987) {
+                int vid = device.getVendorId();
+                tv.append("\nDevice name: " + s + "\n" + "Product id: " +Integer.toString(pid) + "\n" + "Vendor id: " + Integer.toString(vid));
+                PendingIntent pi = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
+                usbManager.requestPermission(device, pi);
+            }
+            else {
+                connection = null;
+                device = null;
+            }
+        }
+        if(device == null) {
+            tv.append("\nNo devices found!");
         }
     }
 
-    /*public void onClickStart(View view) {
-        usbManager = (UsbManager)getSystemService(Context.USB_SERVICE);
-        startButton = (Button)view.findViewById(R.id.buttonStart);
-        stopButton = (Button)view.findViewById(R.id.buttonStop);
-        textView = (TextView)view.findViewById(R.id.serialDataView);
-        HashMap<String, UsbDevice> usbDevices = usbManager.getDeviceList();
-        if (!usbDevices.isEmpty()) {
-            boolean keep = true;
-            for (Map.Entry<String, UsbDevice> entry : usbDevices.entrySet()) {
-                device = entry.getValue();
-                int deviceVID = device.getVendorId();
-                if (deviceVID == 0x2341)//Arduino Vendor ID
-                {
-                    PendingIntent pi = PendingIntent.getBroadcast(this, 0,
-                            new Intent(ACTION_USB_PERMISSION), 0);
-                    usbManager.requestPermission(device, pi);
-                    keep = false;
-                } else {
-                    //connection = null;
-                    device = null;
-                }
+    public void disconnectUsbDevice(){
+        serialPort.close();
+    }
 
-                if (!keep)
-                    break;
-            }
-        }
-    }*/
-
-    private void tvAppend(TextView tv, CharSequence text) { final TextView ftv = tv; final CharSequence ftext = text; runOnUiThread(new Runnable() { @Override public void run() { ftv.append(ftext); } }); }
-
-    /*UsbSerialInterface.UsbReadCallback mCallback = new UsbSerialInterface.UsbReadCallback() {
-        //Defining a Callback which triggers whenever data is read.
+    UsbSerialInterface.UsbReadCallback mCallback = new UsbSerialInterface.UsbReadCallback() {
         @Override
         public void onReceivedData(byte[] arg0) {
             String data = null;
             try {
                 data = new String(arg0, "UTF-8");
                 data.concat("/n");
-                tvAppend(textView, data);
+                tv.append(data);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
-                tvAppend(textView, new String("dsdsd"));
+                tv.append(new String("dsdsd"));
             }
         }
     };
 
 
 
-    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() { //Broadcast Receiver to automatically start and stop the Serial connection.
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            tv.append("BroadcastReceiver");
             if (intent.getAction().equals(ACTION_USB_PERMISSION)) {
+                tv.append("ACTION_USB_PERMISSION");
                 boolean granted = intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED);
                 if (granted) {
-                    UsbDeviceConnection connection = usbManager.openDevice(device);
-                    UsbSerialDevice serialPort = UsbSerialDevice.createUsbSerialDevice(device, connection);
+                    connection = usbManager.openDevice(device);
+                    serialPort = UsbSerialDevice.createUsbSerialDevice(device, connection);
                     if (serialPort != null) {
-                        if (serialPort.open()) { //Set Serial Connection Parameters.
-                            //setUiEnabled(true); //Enable Buttons in UI
+                        if (serialPort.open()) {
                             serialPort.setBaudRate(9600);
                             serialPort.setDataBits(UsbSerialInterface.DATA_BITS_8);
                             serialPort.setStopBits(UsbSerialInterface.STOP_BITS_1);
                             serialPort.setParity(UsbSerialInterface.PARITY_NONE);
                             serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF);
                             serialPort.read(mCallback); //
-                            tvAppend(textView,"Serial Connection Opened!\n");
+                            tv.append("Serial Connection Opened!\n");
 
                         } else {
                             Log.d("SERIAL", "PORT NOT OPEN");
@@ -129,18 +121,12 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("SERIAL", "PERM NOT GRANTED");
                 }
             } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_ATTACHED)) {
-                onClickStart(startButton);
+               tv.append("ACTION_USB_DEVICE_ATTACHED");
+               connectUsbDevice();
             } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
-                onClickStop(stopButton);
+                tv.append("ACTION_USB_DEVICE_DETACHED");
+                disconnectUsbDevice();
             }
         };
     };
-
-    public void onClickSend(View view) {
-        serialPort.write(textView.getText().toString().getBytes());
-    }
-
-    public void onClickStop(View view) {
-        serialPort.close();
-    }*/
 }
