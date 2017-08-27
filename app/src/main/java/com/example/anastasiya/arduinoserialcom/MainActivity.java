@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.io.UnsupportedEncodingException;
+import android.os.Handler;
+import java.util.logging.LogRecord;
 
 public class MainActivity extends AppCompatActivity {
     TextView tv;
@@ -33,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     UsbDevice device;
     UsbDeviceConnection connection;
     UsbSerialDevice serialPort;
+    Handler handler;
+    String data = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         tv = (TextView) findViewById(R.id.textView);
         tv.setText("");
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
+        handler = new Handler();
+        connectUsbDevice();
     }
 
     public void connectUsbDevice() {
@@ -56,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
             int pid = device.getProductId();
             if(pid == 29987) {
                 int vid = device.getVendorId();
-                tv.append("\nDevice name: " + s + "\n" + "Product id: " +Integer.toString(pid) + "\n" + "Vendor id: " + Integer.toString(vid));
                 PendingIntent pi = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
                 usbManager.requestPermission(device, pi);
             }
@@ -66,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         if(device == null) {
-            tv.append("\nNo devices found!");
+            tv.setText("\nNo devices found!");
         }
     }
 
@@ -77,15 +83,18 @@ public class MainActivity extends AppCompatActivity {
     UsbSerialInterface.UsbReadCallback mCallback = new UsbSerialInterface.UsbReadCallback() {
         @Override
         public void onReceivedData(byte[] arg0) {
-            String data = null;
-            try {
-                data = new String(arg0, "UTF-8");
-                data.concat("/n");
-                tv.append(data);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-                tv.append(new String("dsdsd"));
-            }
+        try {
+            data = new String(arg0, "UTF-8");
+            data.concat("/n");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    tv.append(data);
+                }
+            }, 500);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         }
     };
 
@@ -94,39 +103,34 @@ public class MainActivity extends AppCompatActivity {
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            tv.append("BroadcastReceiver");
-            if (intent.getAction().equals(ACTION_USB_PERMISSION)) {
-                tv.append("ACTION_USB_PERMISSION");
-                boolean granted = intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED);
-                if (granted) {
-                    connection = usbManager.openDevice(device);
-                    serialPort = UsbSerialDevice.createUsbSerialDevice(device, connection);
-                    if (serialPort != null) {
-                        if (serialPort.open()) {
-                            serialPort.setBaudRate(9600);
-                            serialPort.setDataBits(UsbSerialInterface.DATA_BITS_8);
-                            serialPort.setStopBits(UsbSerialInterface.STOP_BITS_1);
-                            serialPort.setParity(UsbSerialInterface.PARITY_NONE);
-                            serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF);
-                            serialPort.read(mCallback); //
-                            tv.append("Serial Connection Opened!\n");
-
-                        } else {
-                            Log.d("SERIAL", "PORT NOT OPEN");
-                        }
+        if (intent.getAction().equals(ACTION_USB_PERMISSION)) {
+            boolean granted = intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED);
+            if (granted) {
+                connection = usbManager.openDevice(device);
+                serialPort = UsbSerialDevice.createUsbSerialDevice(device, connection);
+                if (serialPort != null) {
+                    if (serialPort.open()) {
+                        serialPort.setBaudRate(9600);
+                        serialPort.setDataBits(UsbSerialInterface.DATA_BITS_8);
+                        serialPort.setStopBits(UsbSerialInterface.STOP_BITS_1);
+                        serialPort.setParity(UsbSerialInterface.PARITY_NONE);
+                        serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF);
+                        tv.setText("");
+                        serialPort.read(mCallback);
                     } else {
-                        Log.d("SERIAL", "PORT IS NULL");
+                        Log.d("SERIAL", "PORT NOT OPEN");
                     }
                 } else {
-                    Log.d("SERIAL", "PERM NOT GRANTED");
+                    Log.d("SERIAL", "PORT IS NULL");
                 }
-            } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_ATTACHED)) {
-               tv.append("ACTION_USB_DEVICE_ATTACHED");
-               connectUsbDevice();
-            } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
-                tv.append("ACTION_USB_DEVICE_DETACHED");
-                disconnectUsbDevice();
+            } else {
+                Log.d("SERIAL", "PERM NOT GRANTED");
             }
-        };
+        } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_ATTACHED)) {
+           connectUsbDevice();
+        } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
+            disconnectUsbDevice();
+        }
     };
+};
 }
