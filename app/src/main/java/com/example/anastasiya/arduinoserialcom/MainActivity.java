@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
+import android.os.AsyncTask;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.example.anastasiya.arduinoserialcom.services.PupilService;
 import com.felhr.usbserial.UsbSerialDevice;
 import com.felhr.usbserial.UsbSerialInterface;
 
@@ -25,6 +31,11 @@ import java.util.Map;
 import java.util.Set;
 import java.io.UnsupportedEncodingException;
 import android.os.Handler;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.concurrent.TimeUnit;
 import java.util.logging.LogRecord;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,15 +50,44 @@ public class MainActivity extends AppCompatActivity {
     Handler handler;
     String data = null;
 
+    public static final String REQUEST_TAG = "MainActivity";
+    private RequestQueue mQueue;
+    public CustomJSONObjectRequest jsonRequest;
+
+    private PupilService pupilService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv = (TextView) findViewById(R.id.textView);
         tv.setText("");
+        pupilService = PupilService.getInstance(this);
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
         handler = new Handler();
         connectUsbDevice();
+    }
+
+    public void requestBtnOnClick(View view) {
+        HttpRequestTask asyncTask = new HttpRequestTask(new IAsyncResponse() {
+            @Override
+            public void processFinish(Object output){
+                try {
+                    tv.setText(tv.getText() + "\n\n" + ((JSONObject)output).getString("data"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, this.getApplicationContext());
+        asyncTask.execute();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mQueue != null) {
+            mQueue.cancelAll(REQUEST_TAG);
+        }
     }
 
     public void connectUsbDevice() {
@@ -59,10 +99,8 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(broadcastReceiver, deviceUsbPermissions);
         while(deviceIterator.hasNext()){
             device = deviceIterator.next();
-            String s = device.getDeviceName();
             int pid = device.getProductId();
             if(pid == 29987) {
-                int vid = device.getVendorId();
                 PendingIntent pi = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
                 usbManager.requestPermission(device, pi);
             }
@@ -131,6 +169,6 @@ public class MainActivity extends AppCompatActivity {
         } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
             disconnectUsbDevice();
         }
-    };
+    }
 };
 }
