@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">ArduinoSerialCom</string>
+    <string name="app_name">Electronic Diary</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>

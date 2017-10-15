@@ -8,37 +8,34 @@ import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
-import android.os.AsyncTask;
-import android.os.Message;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.Request;
-import com.android.volley.VolleyError;
 import com.example.anastasiya.arduinoserialcom.services.PupilService;
 import com.felhr.usbserial.UsbSerialDevice;
 import com.felhr.usbserial.UsbSerialInterface;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 import java.io.UnsupportedEncodingException;
 import android.os.Handler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.concurrent.TimeUnit;
-import java.util.logging.LogRecord;
-
 public class MainActivity extends AppCompatActivity {
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mToggle;
+    private NavigationView mNavigation;
+
     TextView tv;
     private static String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
     protected static final String TAG = null;
@@ -60,6 +57,31 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
+        mDrawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mNavigation = (NavigationView) findViewById(R.id.navigation_view);
+        mNavigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                switch (id) {
+                    case R.id.nav_home:
+                        break;
+                    case R.id.nav_pupil:
+                        startActivity(new Intent(MainActivity.this, PupilActivity.class));
+                        break;
+                    case R.id.nav_class:
+                        break;
+                }
+                return false;
+            }
+        });
+
+
         tv = (TextView) findViewById(R.id.textView);
         tv.setText("");
         pupilService = PupilService.getInstance(this);
@@ -67,6 +89,16 @@ public class MainActivity extends AppCompatActivity {
         handler = new Handler();
         connectUsbDevice();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(mToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     public void requestBtnOnClick(View view) {
         HttpRequestTask asyncTask = new HttpRequestTask(new IAsyncResponse() {
