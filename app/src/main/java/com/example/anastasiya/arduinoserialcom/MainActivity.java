@@ -1,5 +1,6 @@
 package com.example.anastasiya.arduinoserialcom;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView mNavigation;
 
     TextView tv;
+    TextView readerInfo;
     private static String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
     protected static final String TAG = null;
 
@@ -70,11 +72,13 @@ public class MainActivity extends AppCompatActivity {
                 int id = menuItem.getItemId();
                 switch (id) {
                     case R.id.nav_home:
+                        startActivity(new Intent(MainActivity.this, MainActivity.class));
                         break;
                     case R.id.nav_pupil:
                         startActivity(new Intent(MainActivity.this, PupilActivity.class));
                         break;
                     case R.id.nav_class:
+                        startActivity(new Intent(MainActivity.this, ClassActivity.class));
                         break;
                 }
                 return false;
@@ -84,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         tv = (TextView) findViewById(R.id.textView);
         tv.setText("");
+        readerInfo = (TextView) findViewById(R.id.readerInfo);
         pupilService = PupilService.getInstance(this);
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
         handler = new Handler();
@@ -97,8 +102,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 
     public void requestBtnOnClick(View view) {
         HttpRequestTask asyncTask = new HttpRequestTask(new IAsyncResponse() {
@@ -142,12 +145,19 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         if(device == null) {
-            tv.setText("\nNo devices found!");
+            readerInfo.setText(R.string.no_rfid_readers);
         }
     }
 
     public void disconnectUsbDevice(){
         serialPort.close();
+        ((Activity) this).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tv.setText("");
+                readerInfo.setText(R.string.no_rfid_readers);
+            }
+        });
     }
 
     UsbSerialInterface.UsbReadCallback mCallback = new UsbSerialInterface.UsbReadCallback() {
@@ -160,6 +170,10 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     tv.append(data);
+                    //long uid = Long.parseLong(data);
+                    Intent intent = new Intent(MainActivity.this, PupilActivity.class);
+                    intent.putExtra("uid", data);
+                    startActivity(intent);
                 }
             }, 500);
         } catch (UnsupportedEncodingException e) {
@@ -186,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
                         serialPort.setParity(UsbSerialInterface.PARITY_NONE);
                         serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF);
                         tv.setText("");
+                        readerInfo.setText(R.string.attach_card);
                         serialPort.read(mCallback);
                     } else {
                         Log.d("SERIAL", "PORT NOT OPEN");
