@@ -1,5 +1,6 @@
 package com.example.anastasiya.arduinoserialcom;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,38 +9,36 @@ import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
-import android.os.AsyncTask;
-import android.os.Message;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.Request;
-import com.android.volley.VolleyError;
 import com.example.anastasiya.arduinoserialcom.services.PupilService;
 import com.felhr.usbserial.UsbSerialDevice;
 import com.felhr.usbserial.UsbSerialInterface;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 import java.io.UnsupportedEncodingException;
 import android.os.Handler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.concurrent.TimeUnit;
-import java.util.logging.LogRecord;
-
 public class MainActivity extends AppCompatActivity {
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mToggle;
+    private NavigationView mNavigation;
+
     TextView tv;
+    TextView readerInfo;
     private static String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
     protected static final String TAG = null;
 
@@ -60,12 +59,48 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
+        mDrawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mNavigation = (NavigationView) findViewById(R.id.navigation_view);
+        mNavigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                switch (id) {
+                    case R.id.nav_home:
+                        startActivity(new Intent(MainActivity.this, MainActivity.class));
+                        break;
+                    case R.id.nav_pupil:
+                        startActivity(new Intent(MainActivity.this, PupilActivity.class));
+                        break;
+                    case R.id.nav_class:
+                        startActivity(new Intent(MainActivity.this, ClassActivity.class));
+                        break;
+                }
+                return false;
+            }
+        });
+
+
         tv = (TextView) findViewById(R.id.textView);
         tv.setText("");
+        readerInfo = (TextView) findViewById(R.id.readerInfo);
         pupilService = PupilService.getInstance(this);
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
         handler = new Handler();
         connectUsbDevice();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(mToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void requestBtnOnClick(View view) {
@@ -110,12 +145,19 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         if(device == null) {
-            tv.setText("\nNo devices found!");
+            readerInfo.setText(R.string.no_rfid_readers);
         }
     }
 
     public void disconnectUsbDevice(){
         serialPort.close();
+        ((Activity) this).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tv.setText("");
+                readerInfo.setText(R.string.no_rfid_readers);
+            }
+        });
     }
 
     UsbSerialInterface.UsbReadCallback mCallback = new UsbSerialInterface.UsbReadCallback() {
@@ -128,6 +170,10 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     tv.append(data);
+                    //long uid = Long.parseLong(data);
+                    Intent intent = new Intent(MainActivity.this, PupilActivity.class);
+                    intent.putExtra("uid", data);
+                    startActivity(intent);
                 }
             }, 500);
         } catch (UnsupportedEncodingException e) {
@@ -154,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
                         serialPort.setParity(UsbSerialInterface.PARITY_NONE);
                         serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF);
                         tv.setText("");
+                        readerInfo.setText(R.string.attach_card);
                         serialPort.read(mCallback);
                     } else {
                         Log.d("SERIAL", "PORT NOT OPEN");

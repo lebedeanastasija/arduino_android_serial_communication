@@ -25,7 +25,23 @@ public class PupilService implements Response.Listener<JSONObject>, Response.Err
 
     public Object getPupils() throws InterruptedException {
         responseObject = null;
-        String url = "http://192.168.31.132:3000/pupils";
+        String url = "http://192.168.31.221:3000/pupils";
+        CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method.GET, url, new JSONObject(), this, this);
+        jsonRequest.setTag(REQUEST_TAG);
+        mQueue.add(jsonRequest);
+        synchronized (syncObject) {
+            try {
+                syncObject.wait();
+                return responseObject;
+            } catch (InterruptedException e) {
+                return new VolleyError("Error occured");
+            }
+        }
+    }
+
+    public Object getPupilByUid(String uid) throws InterruptedException {
+        responseObject = null;
+        String url = "http://192.168.31.221:3000/pupils/uid/" + uid;
         CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method.GET, url, new JSONObject(), this, this);
         jsonRequest.setTag(REQUEST_TAG);
         mQueue.add(jsonRequest);

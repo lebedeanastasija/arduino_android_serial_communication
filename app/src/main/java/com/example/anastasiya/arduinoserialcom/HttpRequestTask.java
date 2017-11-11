@@ -5,10 +5,7 @@ import android.os.AsyncTask;
 
 import com.example.anastasiya.arduinoserialcom.services.PupilService;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-public class HttpRequestTask extends AsyncTask<Void, Object, Object>{
+public class HttpRequestTask extends AsyncTask<String, Object, Object>{
         IAsyncResponse delegate = null;
         private PupilService pupilService;
 
@@ -23,10 +20,20 @@ public class HttpRequestTask extends AsyncTask<Void, Object, Object>{
         }
 
         @Override
-        protected Object doInBackground(Void... params) {
+        protected Object doInBackground(String... params) {
             Object response = null;
+            String methodName = params[0];
             try {
-                response = pupilService.getPupils();
+                switch (methodName) {
+                    case "getPupilByUid":
+                        String uid = params[1];
+                        response = pupilService.getPupilByUid(uid);
+                        break;
+                    case "getPupils":
+                        response = pupilService.getPupils();
+                        break;
+                }
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
