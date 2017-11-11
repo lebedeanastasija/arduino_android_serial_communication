@@ -44,6 +44,6 @@ public class PupilActivity extends AppCompatActivity {
                 }
             }
         }, this.getApplicationContext());
-        asyncTask.execute(uid);
+        asyncTask.execute("getPupilByUid", uid);
     }
 }
