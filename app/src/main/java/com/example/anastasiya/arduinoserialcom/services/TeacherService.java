@@ -1,8 +1,6 @@
 package com.example.anastasiya.arduinoserialcom.services;
 
 import android.content.Context;
-import android.os.AsyncTask;
-import android.os.Environment;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -14,26 +12,21 @@ import com.example.anastasiya.arduinoserialcom.R;
 
 import org.json.JSONObject;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-
-public class PupilService implements Response.Listener<JSONObject>, Response.ErrorListener {
-    private static PupilService mInstance;
+public class TeacherService implements Response.Listener<JSONObject>, Response.ErrorListener{
+    private static TeacherService mInstance;
     private RequestQueue mQueue;
+
     private static Object responseObject;
-    public static final String REQUEST_TAG = "PupilService";
+    public static final String REQUEST_TAG = "TeacherService";
     private static final Object syncObject = new Object();
 
-    private PupilService(Context context) {
+    private TeacherService(Context context) {
         mQueue = CustomVolleyRequestQueue.getInstance(context).getRequestQueue();
     }
 
-    public Object getPupils() throws InterruptedException {
+    public Object getScheduleByUid(String uid) throws InterruptedException {
         responseObject = null;
-        String url = "http://192.168.1.5:3000/pupils";
+        String url = "http://192.168.1.5:3000/schedules/teacher/" + uid;
         CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method.GET, url, new JSONObject(), this, this);
         jsonRequest.setTag(REQUEST_TAG);
         mQueue.add(jsonRequest);
@@ -47,13 +40,12 @@ public class PupilService implements Response.Listener<JSONObject>, Response.Err
         }
     }
 
-    public Object getPupilByUid(String uid) throws InterruptedException {
+    public Object getTeacherByUid(String uid) throws InterruptedException {
         responseObject = null;
-        String url = "http://192.168.1.5:3000/pupils/uid/" + uid;
-        writeToLogFile("pupils uid: " + uid);
+
+        String url = "http://192.168.1.5:3000/teachers/" + uid;
         CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method.GET, url, new JSONObject(), this, this);
         jsonRequest.setTag(REQUEST_TAG);
-
         mQueue.add(jsonRequest);
         synchronized (syncObject) {
             try {
@@ -68,7 +60,6 @@ public class PupilService implements Response.Listener<JSONObject>, Response.Err
     @Override
     public void onResponse(JSONObject response) {
         responseObject = response;
-        writeToLogFile(response.toString());
         synchronized (syncObject) {
             syncObject.notify();
         }
@@ -79,38 +70,10 @@ public class PupilService implements Response.Listener<JSONObject>, Response.Err
         responseObject = error;
     }
 
-    public static synchronized PupilService getInstance(Context context) {
+    public static synchronized TeacherService getInstance(Context context) {
         if (mInstance == null) {
-            mInstance = new PupilService(context);
+            mInstance = new TeacherService(context);
         }
         return mInstance;
-    }
-
-    public void writeToLogFile(String text) {
-        if(text != null) {
-            File externalStorageDir = Environment.getExternalStorageDirectory();
-            File myFile = new File(externalStorageDir, "yourfilename.txt");
-
-            if (myFile.exists()) {
-                try {
-                    FileOutputStream fostream = new FileOutputStream(myFile);
-                    OutputStreamWriter oswriter = new OutputStreamWriter(fostream);
-                    BufferedWriter bwriter = new BufferedWriter(oswriter);
-                    bwriter.write(text);
-                    bwriter.newLine();
-                    bwriter.close();
-                    oswriter.close();
-                    fostream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                try {
-                    myFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
     }
 }
