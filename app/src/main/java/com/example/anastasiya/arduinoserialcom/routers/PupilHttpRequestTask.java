@@ -43,6 +43,10 @@ public class PupilHttpRequestTask extends AsyncTask<String, Object, Object>{
                     case "getPupils":
                         response = pupilService.getPupils();
                         break;
+                    case "getPupilsByClassId":
+                        String classId = params[1];
+                        response = pupilService.getPupilsByClassId(classId);
+                        break;
                 }
 
             } catch (InterruptedException e) {

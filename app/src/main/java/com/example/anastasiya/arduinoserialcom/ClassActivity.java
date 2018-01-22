@@ -1,13 +1,64 @@
 package com.example.anastasiya.arduinoserialcom;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
+import com.example.anastasiya.arduinoserialcom.routers.IAsyncResponse;
+import com.example.anastasiya.arduinoserialcom.routers.PupilHttpRequestTask;
+import com.example.anastasiya.arduinoserialcom.routers.TeacherHttpRequestTask;
+
+import org.json.JSONObject;
 
 public class ClassActivity extends AppCompatActivity {
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private String[] pupils = {};
+    private Context context;
+    private Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class);
+
+        Intent intent = getIntent();
+        String teacher_uid = intent.getStringExtra("teacher_uid");
+        context = this.getApplicationContext();
+        activity = this;
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.rvClass);
+        mLayoutManager = new LinearLayoutManager(context);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        TeacherHttpRequestTask asyncTask = new TeacherHttpRequestTask(new IAsyncResponse() {
+            @Override
+            public void processFinish(Object output) {
+                try {
+                    String classId = ((JSONObject) output).getJSONObject("data").getJSONObject("class").getString("id");
+                    PupilHttpRequestTask asyncTask2 = new PupilHttpRequestTask(new IAsyncResponse() {
+                        @Override
+                        public void processFinish(Object output) {
+                            try {
+                                mAdapter = new PupilsListAdapter(pupils);
+                                mRecyclerView.setAdapter(mAdapter);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, context);
+                    asyncTask2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getPupilsByClassId", classId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, context, activity);
+        asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getTeacherByUID", teacher_uid);
     }
 }

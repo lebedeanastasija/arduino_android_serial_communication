@@ -82,7 +82,9 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(profile_intent);
                         break;
                     case R.id.nav_class:
-                        startActivity(new Intent(MainActivity.this, ClassActivity.class));
+                        Intent class_intent = new Intent(MainActivity.this, ClassActivity.class);
+                        class_intent.putExtra("teacher_uid", teacher_uid);
+                        startActivity(class_intent);
                         break;
                 }
                 return false;

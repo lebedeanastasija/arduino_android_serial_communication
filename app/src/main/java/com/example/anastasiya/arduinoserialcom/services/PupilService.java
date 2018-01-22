@@ -68,6 +68,24 @@ public class PupilService implements Response.Listener<JSONObject>, Response.Err
         }
     }
 
+    public Object getPupilsByClassId(String id) throws InterruptedException {
+        responseObject = null;
+        String url = res.getString(R.string.server_address) + "/pupils/class/" + id;
+        writeToLogFile("class id: " + id);
+        CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method.GET, url, new JSONObject(), this, this);
+        jsonRequest.setTag(REQUEST_TAG);
+
+        mQueue.add(jsonRequest);
+        synchronized (syncObject) {
+            try {
+                syncObject.wait();
+                return responseObject;
+            } catch (InterruptedException e) {
+                return new VolleyError("Error occurred");
+            }
+        }
+    }
+
     @Override
     public void onResponse(JSONObject response) {
         responseObject = response;
