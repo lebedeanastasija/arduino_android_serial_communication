@@ -9,7 +9,6 @@ import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
-import android.os.Environment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -20,16 +19,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.android.volley.RequestQueue;
+import com.example.anastasiya.arduinoserialcom.helpers.FileLogger;
 import com.example.anastasiya.arduinoserialcom.routers.PupilHttpRequestTask;
 import com.example.anastasiya.arduinoserialcom.routers.IAsyncResponse;
-import com.example.anastasiya.arduinoserialcom.services.PupilService;
 import com.felhr.usbserial.UsbSerialDevice;
 import com.felhr.usbserial.UsbSerialInterface;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.io.UnsupportedEncodingException;
@@ -42,10 +37,11 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private NavigationView mNavigation;
+    private static String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
+    private FileLogger fileLogger;
 
     TextView tv;
     TextView readerInfo;
-    private static String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
 
     UsbManager usbManager;
     UsbDevice device;
@@ -60,10 +56,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        fileLogger = FileLogger.getInstance(this.getApplicationContext(), this);
 
         final Intent intent = getIntent();
         teacher_uid = intent.getStringExtra("teacher_uid");
-        writeToLogFile("main activity: " + teacher_uid);
+        fileLogger.writeToLogFile("main activity for teacher with uid: " + teacher_uid);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
@@ -92,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         tv = (TextView) findViewById(R.id.textView);
         tv.setText("");
         readerInfo = (TextView) findViewById(R.id.readerInfo);
@@ -100,29 +96,6 @@ public class MainActivity extends AppCompatActivity {
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
         handler = new Handler();
         connectUsbDevice();
-    }
-
-    public void writeToLogFile(String text) {
-        if(text != null) {
-            File externalStorageDir = Environment.getExternalStorageDirectory();
-            File myFile = new File(externalStorageDir, "yourfilename.txt");
-
-            if (myFile.exists()) {
-                try {
-                    FileOutputStream fostream = new FileOutputStream(myFile);
-                    fostream.write(text.getBytes());
-                    fostream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                try {
-                    myFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
     }
 
     @Override
@@ -205,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             tv.append(data);
-                            //long uid = Long.parseLong(data);
                             Intent intent = new Intent(MainActivity.this, PupilActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -1,6 +1,8 @@
 package com.example.anastasiya.arduinoserialcom.services;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -9,24 +11,28 @@ import com.android.volley.VolleyError;
 import com.example.anastasiya.arduinoserialcom.CustomJSONObjectRequest;
 import com.example.anastasiya.arduinoserialcom.CustomVolleyRequestQueue;
 import com.example.anastasiya.arduinoserialcom.R;
+import com.example.anastasiya.arduinoserialcom.helpers.FileLogger;
 
 import org.json.JSONObject;
 
 public class TeacherService implements Response.Listener<JSONObject>, Response.ErrorListener{
     private static TeacherService mInstance;
     private RequestQueue mQueue;
-
     private static Object responseObject;
-    public static final String REQUEST_TAG = "TeacherService";
     private static final Object syncObject = new Object();
+    private static final String REQUEST_TAG = "TeacherService";
+    private Resources res;
+    private FileLogger fileLogger;
 
-    private TeacherService(Context context) {
+    private TeacherService(Context context, Activity activity) {
         mQueue = CustomVolleyRequestQueue.getInstance(context).getRequestQueue();
+        res = context.getResources();
+        fileLogger = FileLogger.getInstance(context, activity);
     }
 
     public Object getScheduleByUid(String uid) throws InterruptedException {
         responseObject = null;
-        String url = "http://192.168.1.5:3000/schedules/teacher/" + uid;
+        String url = res.getString(R.string.server_address) + "/schedules/teacher/" + uid;
         CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method.GET, url, new JSONObject(), this, this);
         jsonRequest.setTag(REQUEST_TAG);
         mQueue.add(jsonRequest);
@@ -43,7 +49,8 @@ public class TeacherService implements Response.Listener<JSONObject>, Response.E
     public Object getTeacherByUid(String uid) throws InterruptedException {
         responseObject = null;
 
-        String url = "http://192.168.1.5:3000/teachers/" + uid;
+        String url = res.getString(R.string.server_address) + "/teachers/uid/" + uid;
+        fileLogger.writeToLogFile(url);
         CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method.GET, url, new JSONObject(), this, this);
         jsonRequest.setTag(REQUEST_TAG);
         mQueue.add(jsonRequest);
@@ -70,9 +77,9 @@ public class TeacherService implements Response.Listener<JSONObject>, Response.E
         responseObject = error;
     }
 
-    public static synchronized TeacherService getInstance(Context context) {
+    public static synchronized TeacherService getInstance(Context context, Activity activity) {
         if (mInstance == null) {
-            mInstance = new TeacherService(context);
+            mInstance = new TeacherService(context, activity);
         }
         return mInstance;
     }

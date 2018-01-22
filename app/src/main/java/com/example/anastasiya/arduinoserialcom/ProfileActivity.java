@@ -1,5 +1,7 @@
 package com.example.anastasiya.arduinoserialcom;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -24,6 +26,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class ProfileActivity extends AppCompatActivity {
+    private Context context;
+    private Activity activity;
+
     TextView tName;
     TextView tSurname;
     TextView tPatronymic;
@@ -45,6 +50,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String teacher_uid = intent.getStringExtra("teacher_uid");
+        context = this.getApplicationContext();
+        activity = this;
 
         TeacherHttpRequestTask asyncTask = new TeacherHttpRequestTask(new IAsyncResponse() {
             @Override
@@ -59,30 +66,7 @@ public class ProfileActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        }, this.getApplicationContext());
+        }, context, activity);
         asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getTeacherByUID", teacher_uid);
-    }
-
-    public void writeToLogFile(String text) {
-        if(text != null) {
-            File externalStorageDir = Environment.getExternalStorageDirectory();
-            File myFile = new File(externalStorageDir, "yourfilename.txt");
-
-            if (myFile.exists()) {
-                try {
-                    FileOutputStream fostream = new FileOutputStream(myFile);
-                    fostream.write(text.getBytes());
-                    fostream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                try {
-                    myFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
     }
 }

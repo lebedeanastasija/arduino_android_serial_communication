@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.example.anastasiya.arduinoserialcom.helpers.FileLogger;
 import com.example.anastasiya.arduinoserialcom.routers.PupilHttpRequestTask;
 import com.example.anastasiya.arduinoserialcom.routers.IAsyncResponse;
 
@@ -18,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class PupilActivity extends AppCompatActivity {
+    private FileLogger fileLogger;
     TextView tvName;
     TextView tvSurname;
     TextView tvPatronymic;
@@ -28,6 +30,7 @@ public class PupilActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pupil);
+        fileLogger = FileLogger.getInstance(this.getApplicationContext(), this);
 
         tvName = (TextView) findViewById(R.id.tvName);
         tvSurname = (TextView) findViewById(R.id.tvSurname);
@@ -37,7 +40,7 @@ public class PupilActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String uid = intent.getStringExtra("uid");
-        writeToLogFile(uid);
+        fileLogger.writeToLogFile(uid);
 
         PupilHttpRequestTask asyncTask = new PupilHttpRequestTask(new IAsyncResponse() {
             @Override
@@ -54,28 +57,5 @@ public class PupilActivity extends AppCompatActivity {
             }
         }, this.getApplicationContext());
         asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getPupilByUid", uid);
-    }
-
-    public void writeToLogFile(String text) {
-        if(text != null) {
-            File externalStorageDir = Environment.getExternalStorageDirectory();
-            File myFile = new File(externalStorageDir, "yourfilename.txt");
-
-            if (myFile.exists()) {
-                try {
-                    FileOutputStream fostream = new FileOutputStream(myFile);
-                    fostream.write(text.getBytes());
-                    fostream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                try {
-                    myFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
     }
 }

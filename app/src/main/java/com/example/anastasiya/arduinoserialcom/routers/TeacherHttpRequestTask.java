@@ -1,9 +1,11 @@
 package com.example.anastasiya.arduinoserialcom.routers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
 
+import com.example.anastasiya.arduinoserialcom.helpers.FileLogger;
 import com.example.anastasiya.arduinoserialcom.services.TeacherService;
 
 import java.io.BufferedWriter;
@@ -13,12 +15,15 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 public class TeacherHttpRequestTask extends AsyncTask<String, Object, Object>{
-    IAsyncResponse delegate = null;
     private TeacherService teacherService;
+    private FileLogger fileLogger;
 
-    public TeacherHttpRequestTask(IAsyncResponse delegate, Context context) {
+    IAsyncResponse delegate = null;
+
+
+    public TeacherHttpRequestTask(IAsyncResponse delegate, Context context, Activity activity) {
         this.delegate = delegate;
-        teacherService = TeacherService.getInstance(context);
+        teacherService = TeacherService.getInstance(context, activity);
     }
 
     @Override

@@ -10,16 +10,15 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.example.anastasiya.arduinoserialcom.helpers.FileLogger;
 import com.example.anastasiya.arduinoserialcom.routers.IAsyncResponse;
 import com.example.anastasiya.arduinoserialcom.routers.TeacherHttpRequestTask;
-import com.example.anastasiya.arduinoserialcom.services.PupilService;
 import com.example.anastasiya.arduinoserialcom.services.TeacherService;
 import com.felhr.usbserial.UsbSerialDevice;
 import com.felhr.usbserial.UsbSerialInterface;
@@ -27,74 +26,42 @@ import com.felhr.usbserial.UsbSerialInterface;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Iterator;
 
 public class LoginActivity extends AppCompatActivity {
+    private FileLogger fileLogger;
+    private static String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
+
     TextView loginInfo;
     TextView readerInfo;
 
-    private static String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
     UsbManager usbManager;
     UsbDevice device;
     UsbDeviceConnection connection;
     UsbSerialDevice serialPort;
     Handler handler;
     String data = null;
-
     Context context;
-
-    public static final String REQUEST_TAG = "LoginActivity";
-
-    private TeacherService teacherService;
+    Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        context = this.getApplicationContext();
         loginInfo = (TextView) findViewById(R.id.tvLoginInfo);
         loginInfo.setText(R.string.attach_teacher_card);
         readerInfo = (TextView) findViewById(R.id.tvReaderInfo);
-        teacherService = TeacherService.getInstance(this);
+
+        context = this.getApplicationContext();
+        activity = this;
+        fileLogger = FileLogger.getInstance(this.getApplicationContext(), this);
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
         handler = new Handler();
         connectUsbDevice();
-    }
-
-    public void writeToLogFile(String text) {
-        if(text != null) {
-            File externalStorageDir = Environment.getExternalStorageDirectory();
-            File myFile = new File(externalStorageDir, "yourfilename.txt");
-
-            if (myFile.exists()) {
-                try {
-                    FileOutputStream fostream = new FileOutputStream(myFile);
-                    OutputStreamWriter oswriter = new OutputStreamWriter(fostream);
-                    BufferedWriter bwriter = new BufferedWriter(oswriter);
-                    bwriter.write(text);
-                    bwriter.newLine();
-                    bwriter.close();
-                    oswriter.close();
-                    fostream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                try {
-                    myFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        fileLogger.writeToLogFile("Hello!");
     }
 
     public void connectUsbDevice() {
@@ -137,13 +104,10 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 data = new String(arg0, "UTF-8");
                 data.concat("/n");
-                writeToLogFile(data);
+                fileLogger.writeToLogFile("Received uid: " + data);
                 TeacherHttpRequestTask asyncTask = new TeacherHttpRequestTask(new IAsyncResponse() {
                     @Override
                     public void processFinish(Object output){
-
-                        writeToLogFile("Server response");
-
                         try {
                              if(((JSONObject)output).getJSONObject("data") != null) {
                                  Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -153,16 +117,14 @@ public class LoginActivity extends AppCompatActivity {
                                  overridePendingTransition(android.R.anim.fade_in, android.R.anim.slide_out_right);
                                  System.exit(0);
                              } else {
-                                 writeToLogFile(R.string.unknown_teacher_card + "\n" + R.string.attach_teacher_card);
+                                 fileLogger.writeToLogFile(R.string.unknown_teacher_card + "\n" + R.string.attach_teacher_card);
                              }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
-                }, context);
+                }, context, activity);
                 asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getTeacherByUID", data);
-                //executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
-
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }

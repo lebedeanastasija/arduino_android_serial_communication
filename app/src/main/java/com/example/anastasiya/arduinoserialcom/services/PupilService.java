@@ -1,6 +1,7 @@
 package com.example.anastasiya.arduinoserialcom.services;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Environment;
 
@@ -26,14 +27,16 @@ public class PupilService implements Response.Listener<JSONObject>, Response.Err
     private static Object responseObject;
     public static final String REQUEST_TAG = "PupilService";
     private static final Object syncObject = new Object();
+    private Resources res;
 
     private PupilService(Context context) {
         mQueue = CustomVolleyRequestQueue.getInstance(context).getRequestQueue();
+        res = context.getResources();
     }
 
     public Object getPupils() throws InterruptedException {
         responseObject = null;
-        String url = "http://192.168.1.5:3000/pupils";
+        String url = res.getString(R.string.server_address) + "/pupils";
         CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method.GET, url, new JSONObject(), this, this);
         jsonRequest.setTag(REQUEST_TAG);
         mQueue.add(jsonRequest);
@@ -49,7 +52,7 @@ public class PupilService implements Response.Listener<JSONObject>, Response.Err
 
     public Object getPupilByUid(String uid) throws InterruptedException {
         responseObject = null;
-        String url = "http://192.168.1.5:3000/pupils/uid/" + uid;
+        String url = res.getString(R.string.server_address) + "/pupils/uid/" + uid;
         writeToLogFile("pupils uid: " + uid);
         CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method.GET, url, new JSONObject(), this, this);
         jsonRequest.setTag(REQUEST_TAG);
