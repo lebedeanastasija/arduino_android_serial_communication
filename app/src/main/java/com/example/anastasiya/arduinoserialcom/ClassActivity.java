@@ -13,6 +13,7 @@ import com.example.anastasiya.arduinoserialcom.routers.IAsyncResponse;
 import com.example.anastasiya.arduinoserialcom.routers.PupilHttpRequestTask;
 import com.example.anastasiya.arduinoserialcom.routers.TeacherHttpRequestTask;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class ClassActivity extends AppCompatActivity {
@@ -44,8 +45,14 @@ public class ClassActivity extends AppCompatActivity {
                     String classId = ((JSONObject) output).getJSONObject("data").getJSONObject("class").getString("id");
                     PupilHttpRequestTask asyncTask2 = new PupilHttpRequestTask(new IAsyncResponse() {
                         @Override
-                        public void processFinish(Object output) {
+                        public void processFinish(Object output1) {
                             try {
+                                JSONArray jsonArray = ((JSONObject) output1).getJSONObject("data").getJSONArray("pupils");
+                                pupils = new String[jsonArray.length()];
+                                for(int i = 0; i < jsonArray.length(); i++)
+                                    pupils[i] = jsonArray.getJSONObject(i).getString("surname") + " " +
+                                                jsonArray.getJSONObject(i).getString("name") + " " +
+                                                jsonArray.getJSONObject(i).getString("patronymic");
                                 mAdapter = new PupilsListAdapter(pupils);
                                 mRecyclerView.setAdapter(mAdapter);
                             } catch (Exception e) {
