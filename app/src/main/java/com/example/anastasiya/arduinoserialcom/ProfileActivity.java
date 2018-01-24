@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.anastasiya.arduinoserialcom.routers.IAsyncResponse;
 import com.example.anastasiya.arduinoserialcom.routers.TeacherHttpRequestTask;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,6 +29,7 @@ import java.io.IOException;
 public class ProfileActivity extends AppCompatActivity {
     private Context context;
     private Activity activity;
+    private Resources res;
 
     TextView tName;
     TextView tSurname;
@@ -46,12 +48,13 @@ public class ProfileActivity extends AppCompatActivity {
         tPatronymic = (TextView)findViewById(R.id.tvTPatronymic);
         tSubject = (TextView)findViewById(R.id.tvTSubject);
         tUID = (TextView)findViewById(R.id.tvTUID);
-        tImage = (ImageView)findViewById(R.id.imgvTeacher);
+        tImage = (ImageView)findViewById(R.id.imvTeacher);
 
         Intent intent = getIntent();
         String teacher_uid = intent.getStringExtra("teacher_uid");
         context = this.getApplicationContext();
         activity = this;
+        res = context.getResources();
 
         TeacherHttpRequestTask asyncTask = new TeacherHttpRequestTask(new IAsyncResponse() {
             @Override
@@ -60,8 +63,13 @@ public class ProfileActivity extends AppCompatActivity {
                     tName.setText(((JSONObject) output).getJSONObject("data").getString("name"));
                     tSurname.setText(((JSONObject) output).getJSONObject("data").getString("surname"));
                     tPatronymic.setText(((JSONObject) output).getJSONObject("data").getString("patronymic"));
-                    tSubject.setText("Subject: " + ((JSONObject) output).getJSONObject("data").getJSONObject("subject").getString("name"));
+                    tSubject.setText("Subject: unknown"/* + ((JSONObject) output).getJSONObject("data").getJSONObject("subject").getString("name")*/);
                     tUID.setText("UID: " + ((JSONObject) output).getJSONObject("data").getString("uid"));
+                    String url = res.getString(R.string.server_address) + "/teachers/avatar/" +
+                            ((JSONObject) output).getJSONObject("data").getString("avatarId");
+                    Picasso.with(context)
+                            .load(url)
+                            .into(tImage);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
