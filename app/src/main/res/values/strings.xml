@@ -2,7 +2,7 @@
     <string name="app_name">Electronic Diary</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
-    <string name="attach_card">Attach a pupil card to see his profile&#8230;</string>
+    <string name="attach_card">Attach a student card for grading his skills&#8230;</string>
     <string name="unknown_teacher_card">No teachers with such UID on the server!</string>
     <string name="attach_teacher_card">Attach your teacher card to login the system&#8230;</string>
     <string name="no_rfid_readers">No RFID readers found!</string>

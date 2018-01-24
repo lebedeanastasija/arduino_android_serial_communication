@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.anastasiya.arduinoserialcom.AddPupilActivity">
+
+    <TextView
+        android:id="@+id/label_create_name"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:gravity="start"
+        android:paddingTop="5dp"
+        android:text="Name"
+        android:textAlignment="textStart" />
+
+    <EditText
+        android:id="@+id/input_create_name"
+        android:layout_width="240dp"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/input_create_surname"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/input_create_surname"
+        android:inputType="text" />
+
+
+    <TextView
+        android:id="@+id/label_create_surname"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/label_create_name"
+        android:layout_alignStart="@+id/label_create_name"
+        android:layout_below="@+id/label_create_name"
+        android:gravity="start"
+        android:paddingTop="5dp"
+        android:text="Surname"
+        android:textAlignment="textStart" />
+
+    <EditText
+        android:id="@+id/input_create_surname"
+        android:layout_width="240dp"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/input_create_patronymic"
+        android:layout_alignStart="@+id/input_create_patronymic"
+        android:layout_below="@+id/input_create_name"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/label_create_patronymic"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/label_create_surname"
+        android:layout_alignStart="@+id/label_create_surname"
+        android:layout_below="@+id/label_create_surname"
+        android:paddingTop="5dp"
+        android:text="Patronymic" />
+
+    <EditText
+        android:id="@+id/input_create_patronymic"
+        android:layout_width="240dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/input_create_surname"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_toEndOf="@+id/label_create_patronymic"
+        android:layout_toRightOf="@+id/label_create_patronymic"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/label_create_uid"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/label_create_patronymic"
+        android:layout_alignStart="@+id/label_create_patronymic"
+        android:layout_below="@+id/label_create_patronymic"
+        android:paddingTop="5dp"
+        android:text="Card UID" />
+
+    <EditText
+        android:id="@+id/input_create_uid"
+        android:layout_width="240dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/input_create_patronymic"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_toEndOf="@+id/label_create_patronymic"
+        android:layout_toRightOf="@+id/label_create_patronymic"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/label_create_class"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/label_create_uid"
+        android:layout_alignStart="@+id/label_create_uid"
+        android:layout_below="@+id/label_create_uid"
+        android:paddingTop="10dp"
+        android:text="Class" />
+
+    <TextView
+        android:id="@+id/label_class_value"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignBottom="@+id/label_create_class"
+        android:layout_alignLeft="@+id/input_create_uid"
+        android:layout_alignStart="@+id/input_create_uid"
+        android:paddingTop="10dp"
+        android:text="1A" />
+
+    <TextView
+        android:id="@+id/label_create_avatar"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:paddingTop="10dp"
+        android:text="Avatar"
+        android:layout_below="@+id/label_create_class"
+        android:layout_alignLeft="@+id/label_create_class"
+        android:layout_alignStart="@+id/label_create_class"
+        android:layout_marginTop="14dp" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="108dp"
+        android:background="@color/colorPrimary"
+        android:text="Create"
+        android:textColor="@android:color/white"
+        android:layout_below="@+id/label_create_class"
+        android:layout_alignLeft="@+id/label_create_class"
+        android:layout_alignStart="@+id/label_create_class" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/button3"
+        android:layout_alignBottom="@+id/button3"
+        android:layout_alignEnd="@+id/input_create_uid"
+        android:layout_alignRight="@+id/input_create_uid"
+        android:background="@android:color/darker_gray"
+        android:text="Cancel"
+        android:textColor="@android:color/white" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/ic_menu_camera"
+        android:layout_toRightOf="@+id/button3"
+        android:layout_alignBottom="@+id/label_create_avatar"
+        android:layout_alignTop="@+id/label_create_avatar" />
+</RelativeLayout>

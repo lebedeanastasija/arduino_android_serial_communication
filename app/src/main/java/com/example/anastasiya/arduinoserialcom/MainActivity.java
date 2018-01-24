@@ -10,11 +10,13 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -73,9 +75,6 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 int id = menuItem.getItemId();
                 switch (id) {
-                    case R.id.nav_home:
-                        startActivity(new Intent(MainActivity.this, MainActivity.class));
-                        break;
                     case R.id.nav_profile:
                         Intent profile_intent = new Intent(MainActivity.this, ProfileActivity.class);
                         profile_intent.putExtra("teacher_uid", teacher_uid);
@@ -92,9 +91,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         tv = (TextView) findViewById(R.id.textView);
-        tv.setText("");
         readerInfo = (TextView) findViewById(R.id.readerInfo);
-        readerInfo.append("\n"+teacher_uid);
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
         handler = new Handler();
         connectUsbDevice();
@@ -113,9 +110,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.home_activity_menu, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(mToggle.onOptionsItemSelected(item)) {
             return true;
+        }
+        switch (item.getItemId()) {
+            case R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -211,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
                             serialPort.setStopBits(UsbSerialInterface.STOP_BITS_1);
                             serialPort.setParity(UsbSerialInterface.PARITY_NONE);
                             serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF);
-                            tv.setText("");
+                            tv.setText("Received uids:\n");
                             readerInfo.setText(R.string.attach_card);
                             serialPort.read(mCallback);
                         } else {

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.anastasiya.arduinoserialcom.ClassActivity">
+    <item
+        android:id="@+id/action_add_pupil"
+        android:icon="@mipmap/ic_person_add_white_24dp"
+        android:title="Add pupil"
+        app:showAsAction="always"/>
+</menu>

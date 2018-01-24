@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/nav_home"
-        android:icon="@mipmap/ic_home_black_24dp"
-        android:title="Home"/>
     <item android:id="@+id/nav_profile"
         android:icon="@mipmap/ic_settings_black_24dp"
-        android:title="Profile"
+        android:title="Teacher profile"
         app:showAsAction="always"/>
     <item android:id="@+id/nav_class"
         android:icon="@mipmap/ic_group_black_24dp"

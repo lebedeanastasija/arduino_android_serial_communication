@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.anastasiya.arduinoserialcom.helpers.FileLogger;
 import com.example.anastasiya.arduinoserialcom.routers.IAsyncResponse;
@@ -21,11 +24,12 @@ public class ClassActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private String[] pupils = {};
-    private String[] avatarIds;
+    private String[] pupils = new String[0];
+    private String[] avatarIds = new String[0];
     private Context context;
     private Activity activity;
     private FileLogger fileLogger;
+    private String teacher_uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +37,7 @@ public class ClassActivity extends AppCompatActivity {
         setContentView(R.layout.activity_class);
 
         Intent intent = getIntent();
-        String teacher_uid = intent.getStringExtra("teacher_uid");
+        teacher_uid = intent.getStringExtra("teacher_uid");
         context = this.getApplicationContext();
         activity = this;
 
@@ -42,6 +46,16 @@ public class ClassActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(context);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        getPupils();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getPupils();
+    }
+
+    private void getPupils() {
         TeacherHttpRequestTask asyncTask = new TeacherHttpRequestTask(new IAsyncResponse() {
             @Override
             public void processFinish(Object output) {
@@ -78,5 +92,27 @@ public class ClassActivity extends AppCompatActivity {
             }
         }, context, activity);
         asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getTeacherByUID", teacher_uid);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.class_activity_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+
+            case R.id.action_add_pupil:
+                Intent add_pupil_intent = new Intent(this, AddPupilActivity.class);
+                add_pupil_intent.putExtra("teacher_uid", teacher_uid);
+                startActivity(add_pupil_intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
