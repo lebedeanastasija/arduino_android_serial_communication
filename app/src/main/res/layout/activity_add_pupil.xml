@@ -128,13 +128,13 @@
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="108dp"
+        android:layout_marginTop="81dp"
         android:background="@color/colorPrimary"
         android:text="Create"
         android:textColor="@android:color/white"
-        android:layout_below="@+id/label_create_class"
-        android:layout_alignLeft="@+id/label_create_class"
-        android:layout_alignStart="@+id/label_create_class" />
+        android:layout_below="@+id/button_add_pupil_avatar"
+        android:layout_alignLeft="@+id/label_create_avatar"
+        android:layout_alignStart="@+id/label_create_avatar" />
 
     <Button
         android:id="@+id/button4"
@@ -149,13 +149,36 @@
         android:textColor="@android:color/white" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton2"
+        android:id="@+id/button_add_pupil_avatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
         app:fabSize="mini"
         app:srcCompat="@android:drawable/ic_menu_camera"
-        android:layout_toRightOf="@+id/button3"
-        android:layout_alignBottom="@+id/label_create_avatar"
-        android:layout_alignTop="@+id/label_create_avatar" />
+        android:layout_below="@+id/label_create_avatar"
+        android:layout_alignRight="@+id/label_create_avatar"
+        android:layout_alignEnd="@+id/label_create_avatar" />
+
+    <ImageView
+        android:id="@+id/image_add_pupil"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignLeft="@+id/label_class_value"
+        android:layout_alignStart="@+id/label_class_value"
+        android:layout_below="@+id/label_class_value"
+        app:srcCompat="@mipmap/ic_person_black_24dp" />
+
+    <TextView
+        android:id="@+id/label_avatar_path"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/button4"
+        android:layout_alignLeft="@+id/button3"
+        android:layout_alignRight="@+id/button4"
+        android:layout_alignStart="@+id/button3"
+        android:layout_below="@+id/button3"
+        android:layout_marginTop="31dp"
+        android:text="TextView"
+        android:textSize="18sp" />
+
 </RelativeLayout>
