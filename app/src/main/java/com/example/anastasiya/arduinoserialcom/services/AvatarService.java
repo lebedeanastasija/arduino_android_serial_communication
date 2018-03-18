@@ -13,51 +13,44 @@ import com.example.anastasiya.arduinoserialcom.CustomVolleyRequestQueue;
 import com.example.anastasiya.arduinoserialcom.R;
 import com.example.anastasiya.arduinoserialcom.helpers.FileLogger;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
-public class TeacherService implements Response.Listener<JSONObject>, Response.ErrorListener{
-    private static TeacherService mInstance;
+public class AvatarService implements Response.Listener<JSONObject>, Response.ErrorListener {
+    private static AvatarService mInstance;
     private RequestQueue mQueue;
     private static Object responseObject;
-    private static final Object syncObject = new Object();
-    private static final String REQUEST_TAG = "TeacherService";
-    private Resources res;
     private FileLogger fileLogger;
+    public static final String REQUEST_TAG = "AvatarService";
+    private static final Object syncObject = new Object();
+    private Resources res;
 
-    private TeacherService(Context context, Activity activity) {
+    private AvatarService(Context context, Activity activity) {
         mQueue = CustomVolleyRequestQueue.getInstance(context).getRequestQueue();
         res = context.getResources();
         fileLogger = FileLogger.getInstance(context, activity);
     }
 
-    public Object getScheduleByUid(String uid) throws InterruptedException {
+    public Object uploadPupilAvatar(String pupilId, String data, String name) throws InterruptedException {
         responseObject = null;
-        String url = res.getString(R.string.server_address) + "/schedules/teacher/" + uid;
-        CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method.GET, url, new JSONObject(), this, this);
-        jsonRequest.setTag(REQUEST_TAG);
-        mQueue.add(jsonRequest);
-        synchronized (syncObject) {
-            try {
-                syncObject.wait();
-                return responseObject;
-            } catch (InterruptedException e) {
-                return new VolleyError("Error occurred");
-            }
+        String url = res.getString(R.string.server_address) + "/avatars/pupil/" + pupilId;
+        fileLogger.writeToLogFile("file name: " + name);
+        fileLogger.writeToLogFile("string: " + data);
+        JSONObject avatar = new JSONObject();
+        try {
+            avatar.put("name", name);
+            avatar.put("data", data);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-    }
-
-    public Object getTeacherByUid(String uid) throws InterruptedException {
-        responseObject = null;
-
-        String url = res.getString(R.string.server_address) + "/teachers/uid/" + uid;
-        fileLogger.writeToLogFile(url);
-        CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method.GET, url, new JSONObject(), this, this);
+        CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method.POST, url, avatar, this, this);
         jsonRequest.setTag(REQUEST_TAG);
+
         mQueue.add(jsonRequest);
         synchronized (syncObject) {
             try {
                 syncObject.wait();
-                fileLogger.writeToLogFile("Sync object is ready!");
                 return responseObject;
             } catch (InterruptedException e) {
                 return new VolleyError("Error occurred");
@@ -67,8 +60,8 @@ public class TeacherService implements Response.Listener<JSONObject>, Response.E
 
     @Override
     public void onResponse(JSONObject response) {
-        fileLogger.writeToLogFile("On response!");
         responseObject = response;
+        fileLogger.writeToLogFile(response.toString());
         synchronized (syncObject) {
             syncObject.notify();
         }
@@ -79,9 +72,9 @@ public class TeacherService implements Response.Listener<JSONObject>, Response.E
         responseObject = error;
     }
 
-    public static synchronized TeacherService getInstance(Context context, Activity activity) {
+    public static synchronized AvatarService getInstance(Context context, Activity activity) {
         if (mInstance == null) {
-            mInstance = new TeacherService(context, activity);
+            mInstance = new AvatarService(context, activity);
         }
         return mInstance;
     }

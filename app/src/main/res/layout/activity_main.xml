@@ -20,14 +20,15 @@
             android:id="@+id/readerInfo"
             android:layout_width="183dp"
             android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/imageView"
+            android:layout_alignStart="@+id/imageView"
+            android:layout_below="@+id/imageView"
+            android:layout_marginTop="35dp"
+            android:fontFamily="sans-serif"
             android:text="@string/attach_card"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:typeface="serif"
-            android:layout_marginTop="35dp"
-            android:layout_below="@+id/imageView"
-            android:layout_alignLeft="@+id/imageView"
-            android:layout_alignStart="@+id/imageView" />
+            android:typeface="serif" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -50,7 +51,7 @@
             android:layout_alignStart="@+id/readerInfo"
             android:layout_below="@+id/readerInfo"
             android:layout_marginTop="19dp"
-            android:text="Received uids:"
+            android:text="@string/received_uids"
             android:textAlignment="center" />
     </RelativeLayout>
 

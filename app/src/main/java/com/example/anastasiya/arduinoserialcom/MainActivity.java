@@ -36,11 +36,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
+    private Context context;
+    private Activity activity;
+
+    private FileLogger fileLogger;
+
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private NavigationView mNavigation;
     private static String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
-    private FileLogger fileLogger;
 
     TextView tv;
     TextView readerInfo;
@@ -58,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        activity = this;
+        context = activity.getApplicationContext();
         fileLogger = FileLogger.getInstance(this.getApplicationContext(), this);
 
         final Intent intent = getIntent();
@@ -126,20 +132,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void requestBtnOnClick(View view) {
-        PupilHttpRequestTask asyncTask = new PupilHttpRequestTask(new IAsyncResponse() {
-            @Override
-            public void processFinish(Object output){
-                try {
-                    tv.setText(tv.getText() + "\n\n" + ((JSONObject)output).getString("data"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, this.getApplicationContext());
-        asyncTask.execute();
     }
 
     public void connectUsbDevice() {
@@ -219,7 +211,8 @@ public class MainActivity extends AppCompatActivity {
                             serialPort.setStopBits(UsbSerialInterface.STOP_BITS_1);
                             serialPort.setParity(UsbSerialInterface.PARITY_NONE);
                             serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF);
-                            tv.setText("Received uids:\n");
+                            tv.setText(R.string.received_uids);
+                            tv.append("\n");
                             readerInfo.setText(R.string.attach_card);
                             serialPort.read(mCallback);
                         } else {

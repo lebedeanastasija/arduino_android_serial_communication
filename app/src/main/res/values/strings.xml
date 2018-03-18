@@ -2,9 +2,9 @@
     <string name="app_name">Electronic Diary</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
-    <string name="attach_card">Attach a student card for grading his skills&#8230;</string>
+    <string name="attach_card">Attach a student card for grading his skills.</string>
     <string name="unknown_teacher_card">No teachers with such UID on the server!</string>
-    <string name="attach_teacher_card">Attach your teacher card to login the system&#8230;</string>
+    <string name="attach_teacher_card">Attach your teacher card to login the system.</string>
     <string name="no_rfid_readers">No RFID readers found!</string>
     <string name="rfid_reader_found">RFID reader detected</string>
     <string name="title_activity_login">Sign in</string>
@@ -21,4 +21,18 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <!-- Strings related to add pupil  -->
+    <string name="surname">Surname</string>
+    <string name="name">Name</string>
+    <string name="patronymic">Patronymic</string>
+    <string name="card_uid">Card UID</string>
+    <string name="school_class">Class</string>
+    <string name="avatar">Avatar</string>
+    <string name="create">Create</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Strings for tests -->
+    <string name="received_uids">Received uids:</string>
+    <string name="avatar_path">Avatar path:</string>
 </resources>

@@ -7,7 +7,7 @@
     tools:context="com.example.anastasiya.arduinoserialcom.AddPupilActivity">
 
     <TextView
-        android:id="@+id/label_create_name"
+        android:id="@+id/label_create_surname"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
@@ -17,60 +17,61 @@
         android:layout_marginStart="16dp"
         android:gravity="start"
         android:paddingTop="5dp"
-        android:text="Name"
-        android:textAlignment="textStart" />
-
-    <EditText
-        android:id="@+id/input_create_name"
-        android:layout_width="240dp"
-        android:layout_height="40dp"
-        android:layout_alignLeft="@+id/input_create_surname"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/input_create_surname"
-        android:inputType="text" />
-
-
-    <TextView
-        android:id="@+id/label_create_surname"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_alignLeft="@+id/label_create_name"
-        android:layout_alignStart="@+id/label_create_name"
-        android:layout_below="@+id/label_create_name"
-        android:gravity="start"
-        android:paddingTop="5dp"
-        android:text="Surname"
+        android:text="@string/surname"
         android:textAlignment="textStart" />
 
     <EditText
         android:id="@+id/input_create_surname"
         android:layout_width="240dp"
         android:layout_height="40dp"
+        android:layout_alignLeft="@+id/input_create_name"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/input_create_name"
+        android:inputType="text" />
+
+
+    <TextView
+        android:id="@+id/label_create_name"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/label_create_surname"
+        android:layout_alignStart="@+id/label_create_surname"
+        android:layout_below="@+id/label_create_surname"
+        android:gravity="start"
+        android:paddingTop="5dp"
+        android:text="@string/name"
+        android:textAlignment="textStart" />
+
+    <EditText
+        android:id="@+id/input_create_name"
+        android:layout_width="240dp"
+        android:layout_height="40dp"
         android:layout_alignLeft="@+id/input_create_patronymic"
         android:layout_alignStart="@+id/input_create_patronymic"
-        android:layout_below="@+id/input_create_name"
+        android:layout_below="@+id/input_create_surname"
         android:inputType="text" />
 
     <TextView
         android:id="@+id/label_create_patronymic"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_alignLeft="@+id/label_create_surname"
-        android:layout_alignStart="@+id/label_create_surname"
-        android:layout_below="@+id/label_create_surname"
+        android:layout_alignLeft="@+id/label_create_name"
+        android:layout_alignStart="@+id/label_create_name"
+        android:layout_below="@+id/label_create_name"
         android:paddingTop="5dp"
-        android:text="Patronymic" />
+        android:text="@string/patronymic" />
 
     <EditText
         android:id="@+id/input_create_patronymic"
         android:layout_width="240dp"
         android:layout_height="40dp"
-        android:layout_below="@+id/input_create_surname"
         android:layout_marginLeft="15dp"
         android:layout_marginStart="15dp"
         android:layout_toEndOf="@+id/label_create_patronymic"
         android:layout_toRightOf="@+id/label_create_patronymic"
-        android:inputType="text" />
+        android:inputType="text"
+        android:layout_above="@+id/input_create_uid"
+        android:layout_below="@+id/input_create_name" />
 
     <TextView
         android:id="@+id/label_create_uid"
@@ -80,18 +81,16 @@
         android:layout_alignStart="@+id/label_create_patronymic"
         android:layout_below="@+id/label_create_patronymic"
         android:paddingTop="5dp"
-        android:text="Card UID" />
+        android:text="@string/card_uid" />
 
     <EditText
         android:id="@+id/input_create_uid"
         android:layout_width="240dp"
         android:layout_height="40dp"
-        android:layout_below="@+id/input_create_patronymic"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_toEndOf="@+id/label_create_patronymic"
-        android:layout_toRightOf="@+id/label_create_patronymic"
-        android:inputType="text" />
+        android:inputType="text"
+        android:layout_above="@+id/label_class_value"
+        android:layout_alignLeft="@+id/input_create_name"
+        android:layout_alignStart="@+id/input_create_name" />
 
     <TextView
         android:id="@+id/label_create_class"
@@ -101,7 +100,7 @@
         android:layout_alignStart="@+id/label_create_uid"
         android:layout_below="@+id/label_create_uid"
         android:paddingTop="10dp"
-        android:text="Class" />
+        android:text="@string/school_class" />
 
     <TextView
         android:id="@+id/label_class_value"
@@ -110,42 +109,42 @@
         android:layout_alignBottom="@+id/label_create_class"
         android:layout_alignLeft="@+id/input_create_uid"
         android:layout_alignStart="@+id/input_create_uid"
-        android:paddingTop="10dp"
-        android:text="1A" />
+        android:paddingTop="10dp" />
 
     <TextView
         android:id="@+id/label_create_avatar"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:paddingTop="10dp"
-        android:text="Avatar"
+        android:text="@string/avatar"
         android:layout_below="@+id/label_create_class"
         android:layout_alignLeft="@+id/label_create_class"
         android:layout_alignStart="@+id/label_create_class"
         android:layout_marginTop="14dp" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/button_create_pupil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="81dp"
         android:background="@color/colorPrimary"
-        android:text="Create"
+        android:text="@string/create"
         android:textColor="@android:color/white"
         android:layout_below="@+id/button_add_pupil_avatar"
         android:layout_alignLeft="@+id/label_create_avatar"
-        android:layout_alignStart="@+id/label_create_avatar" />
+        android:layout_alignStart="@+id/label_create_avatar"
+        android:onClick="CreatePupil"/>
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/cancel_create_pupil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button3"
-        android:layout_alignBottom="@+id/button3"
+        android:layout_alignBaseline="@+id/button_create_pupil"
+        android:layout_alignBottom="@+id/button_create_pupil"
         android:layout_alignEnd="@+id/input_create_uid"
         android:layout_alignRight="@+id/input_create_uid"
         android:background="@android:color/darker_gray"
-        android:text="Cancel"
+        android:text="@string/cancel"
         android:textColor="@android:color/white" />
 
     <android.support.design.widget.FloatingActionButton
@@ -166,19 +165,7 @@
         android:layout_alignLeft="@+id/label_class_value"
         android:layout_alignStart="@+id/label_class_value"
         android:layout_below="@+id/label_class_value"
-        app:srcCompat="@mipmap/ic_person_black_24dp" />
-
-    <TextView
-        android:id="@+id/label_avatar_path"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/button4"
-        android:layout_alignLeft="@+id/button3"
-        android:layout_alignRight="@+id/button4"
-        android:layout_alignStart="@+id/button3"
-        android:layout_below="@+id/button3"
-        android:layout_marginTop="31dp"
-        android:text="TextView"
-        android:textSize="18sp" />
+        app:srcCompat="@mipmap/ic_person_black_24dp"
+        android:contentDescription="@string/avatar"/>
 
 </RelativeLayout>

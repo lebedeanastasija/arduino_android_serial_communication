@@ -1,5 +1,6 @@
 package com.example.anastasiya.arduinoserialcom;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -25,6 +26,7 @@ import java.io.IOException;
 public class PupilActivity extends AppCompatActivity {
     private FileLogger fileLogger;
     private Context context;
+    private Activity activity;
 
     TextView tvName;
     TextView tvSurname;
@@ -38,7 +40,11 @@ public class PupilActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pupil);
-        fileLogger = FileLogger.getInstance(this.getApplicationContext(), this);
+
+        activity = this;
+        context = getApplicationContext();
+
+        fileLogger = FileLogger.getInstance(context, activity);
 
         tvName = (TextView) findViewById(R.id.tvName);
         tvSurname = (TextView) findViewById(R.id.tvSurname);
@@ -50,29 +56,29 @@ public class PupilActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String uid = intent.getStringExtra("uid");
         fileLogger.writeToLogFile(uid);
-        context = getApplicationContext();
         res = context.getResources();
 
         PupilHttpRequestTask asyncTask = new PupilHttpRequestTask(new IAsyncResponse() {
             @Override
             public void processFinish(Object output) {
                 try {
-                    tvName.setText("Name: " + ((JSONObject) output).getJSONObject("data").getString("name"));
-                    tvSurname.setText("Surname: " + ((JSONObject) output).getJSONObject("data").getString("surname"));
-                    tvPatronymic.setText("Patronymic: " + ((JSONObject) output).getJSONObject("data").getString("patronymic"));
+                    tvName.setText(((JSONObject) output).getJSONObject("data").getString("name"));
+                    tvSurname.setText(((JSONObject) output).getJSONObject("data").getString("surname"));
+                    tvPatronymic.setText(((JSONObject) output).getJSONObject("data").getString("patronymic"));
                     tvClass.setText("Class: " + ((JSONObject) output).getJSONObject("data").getJSONObject("class").getString("number") +
                             ((JSONObject) output).getJSONObject("data").getJSONObject("class").getString("letter"));
                     tvSubject.setText("Subject: unknown");
                     String url = res.getString(R.string.server_address) + "/pupils/avatar/" +
                             ((JSONObject) output).getJSONObject("data").getString("avatarId");
-                    Picasso.with(context)
-                            .load(url)
-                            .into(imvPupil);
+                    Picasso
+                    .with(context)
+                    .load(url)
+                    .into(imvPupil);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-        }, this.getApplicationContext());
+        }, context, activity);
         asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getPupilByUid", uid);
     }
 }

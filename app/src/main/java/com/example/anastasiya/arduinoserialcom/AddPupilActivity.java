@@ -1,11 +1,14 @@
 package com.example.anastasiya.arduinoserialcom;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -14,8 +17,16 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.anastasiya.arduinoserialcom.helpers.FileLogger;
+import com.example.anastasiya.arduinoserialcom.routers.AvatarHttpRequestTask;
+import com.example.anastasiya.arduinoserialcom.routers.IAsyncResponse;
+import com.example.anastasiya.arduinoserialcom.routers.PupilHttpRequestTask;
+
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -23,17 +34,40 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class AddPupilActivity extends AppCompatActivity {
+    private Context context;
+    private Activity activity;
+
+    private FileLogger fileLogger;
+
     ImageView ivPupil;
-    TextView tvAvatarPath;
+    EditText etSurname;
+    EditText etName;
+    EditText etPatronymic;
+    EditText etUID;
+
     Integer REQUEST_CAMERA=1, SELECT_FILE=0;
+    String avatarData;
+    String avatarName;
+    String classId = "1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_pupil);
-        FloatingActionButton fabAvatar;
+
+        activity = this;
+        context = getApplicationContext();
+        fileLogger = FileLogger.getInstance(context, activity);
+
+
         ivPupil = (ImageView) findViewById(R.id.image_add_pupil);
-        tvAvatarPath = (TextView) findViewById(R.id.label_avatar_path);
+
+        etSurname = (EditText) findViewById(R.id.input_create_surname);
+        etName = (EditText) findViewById(R.id.input_create_name);
+        etPatronymic = (EditText) findViewById(R.id.input_create_patronymic);
+        etUID = (EditText) findViewById(R.id.input_create_uid);
+
+        FloatingActionButton fabAvatar;
         fabAvatar = (FloatingActionButton) findViewById(R.id.button_add_pupil_avatar);
         fabAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,26 +99,57 @@ public class AddPupilActivity extends AppCompatActivity {
         builder.show();
     }
 
+    public void CreatePupil(View v) {
+        PupilHttpRequestTask asyncTask = new PupilHttpRequestTask(new IAsyncResponse() {
+            @Override
+            public void processFinish(Object output) {
+                String pupilId = null;
+                try {
+                    pupilId = ((JSONObject) output).getJSONObject("data").getString("id");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                AvatarHttpRequestTask asyncTask1 = new AvatarHttpRequestTask(new IAsyncResponse() {
+                    @Override
+                    public void processFinish(Object output1) {
+
+                    }
+                }, context, activity);
+
+                asyncTask1.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "uploadPupilAvatar", pupilId, avatarData, avatarName);
+            }
+        }, context, activity);
+
+        String surname = etSurname.getText().toString();
+        String name = etName.getText().toString();
+        String patronymic = etPatronymic.getText().toString();
+        String UID = etUID.getText().toString();
+
+        asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "createPupil", surname, name, patronymic, UID, classId);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode == Activity.RESULT_OK) {
+            avatarName = "avatar";
             if(requestCode == REQUEST_CAMERA) {
                 Bundle bundle = data.getExtras();
                 final Bitmap bitmap = (Bitmap) bundle.get("data");
                 ivPupil.setImageBitmap(bitmap);
+
+                avatarData = BitmapToBase64(bitmap);
             } else if(requestCode == SELECT_FILE) {
                 Uri selectedImageUri = data.getData();
                 ivPupil.setImageURI(selectedImageUri);
-                String rowPath = selectedImageUri.getPath();
-                File imageFile = new File(rowPath);
-                tvAvatarPath.setText(imageFile.getPath());
                 try {
-                    Bitmap b = BitmapFactory.decodeStream(new FileInputStream(imageFile));
-
-                } catch (FileNotFoundException e) {
-                    Log.e("ERROR", e.getMessage());
+                    ivPupil.buildDrawingCache();
+                    Bitmap bitmap = ivPupil.getDrawingCache();
+                    avatarData = BitmapToBase64(bitmap);
+                } catch (Exception e) {
+                    fileLogger.writeToLogFile(e.getMessage());
                 }
             }
         }

@@ -48,7 +48,7 @@ public class ProfileActivity extends AppCompatActivity {
         tPatronymic = (TextView)findViewById(R.id.tvTPatronymic);
         tSubject = (TextView)findViewById(R.id.tvTSubject);
         tUID = (TextView)findViewById(R.id.tvTUID);
-        tImage = (ImageView)findViewById(R.id.imvTeacher);
+        tImage = (ImageView)findViewById(R.id.image_teacher);
 
         Intent intent = getIntent();
         String teacher_uid = intent.getStringExtra("teacher_uid");
@@ -63,7 +63,11 @@ public class ProfileActivity extends AppCompatActivity {
                     tName.setText(((JSONObject) output).getJSONObject("data").getString("name"));
                     tSurname.setText(((JSONObject) output).getJSONObject("data").getString("surname"));
                     tPatronymic.setText(((JSONObject) output).getJSONObject("data").getString("patronymic"));
-                    tSubject.setText("Subject: unknown"/* + ((JSONObject) output).getJSONObject("data").getJSONObject("subject").getString("name")*/);
+                    if (!((JSONObject) output).getJSONObject("data").isNull("subjectId")) {
+                        tSubject.setText("Subject: " + ((JSONObject) output).getJSONObject("data").getJSONObject("subject").getString("name"));
+                    } else {
+                        tSubject.setText("");
+                    }
                     tUID.setText("UID: " + ((JSONObject) output).getJSONObject("data").getString("uid"));
                     String url = res.getString(R.string.server_address) + "/teachers/avatar/" +
                             ((JSONObject) output).getJSONObject("data").getString("avatarId");

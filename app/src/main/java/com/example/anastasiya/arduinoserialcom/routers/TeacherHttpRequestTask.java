@@ -24,6 +24,7 @@ public class TeacherHttpRequestTask extends AsyncTask<String, Object, Object>{
     public TeacherHttpRequestTask(IAsyncResponse delegate, Context context, Activity activity) {
         this.delegate = delegate;
         teacherService = TeacherService.getInstance(context, activity);
+        fileLogger = FileLogger.getInstance(context, activity);
     }
 
     @Override
@@ -33,6 +34,7 @@ public class TeacherHttpRequestTask extends AsyncTask<String, Object, Object>{
 
     @Override
     protected Object doInBackground(String... params) {
+        fileLogger.writeToLogFile("dddddd");
         Object response = null;
         String methodName = params[0];
         try {
@@ -43,7 +45,9 @@ public class TeacherHttpRequestTask extends AsyncTask<String, Object, Object>{
                     break;
                 case "getTeacherByUID":
                     uid = params[1];
+                    fileLogger.writeToLogFile("UID: " + uid);
                     response = teacherService.getTeacherByUid(uid);
+                    fileLogger.writeToLogFile("Response: "+ response.toString());
                     break;
             }
 
@@ -62,34 +66,5 @@ public class TeacherHttpRequestTask extends AsyncTask<String, Object, Object>{
     protected void onPostExecute(Object result) {
         super.onPostExecute(result);
         delegate.processFinish(result);
-    }
-
-    public void writeToLogFile(String text) {
-        if(text != null) {
-            File externalStorageDir = Environment.getExternalStorageDirectory();
-            File myFile = new File(externalStorageDir, "yourfilename.txt");
-
-            if (myFile.exists()) {
-                try {
-                    FileOutputStream fostream = new FileOutputStream(myFile);
-                    OutputStreamWriter oswriter = new OutputStreamWriter(fostream);
-                    BufferedWriter bwriter = new BufferedWriter(oswriter);
-                    bwriter.append(text);
-                    bwriter.newLine();
-                    bwriter.close();
-                    oswriter.close();
-                    fostream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                try {
-                    myFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
     }
 }

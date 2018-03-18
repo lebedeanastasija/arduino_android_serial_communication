@@ -84,7 +84,7 @@ public class ClassActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
-                    }, context);
+                    }, context, activity);
                     asyncTask2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getPupilsByClassId", classId);
                 } catch (Exception e) {
                     e.printStackTrace();
