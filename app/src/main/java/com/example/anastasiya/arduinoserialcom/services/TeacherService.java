@@ -50,16 +50,20 @@ public class TeacherService implements Response.Listener<JSONObject>, Response.E
         responseObject = null;
 
         String url = res.getString(R.string.server_address) + "/teachers/uid/" + uid;
-        fileLogger.writeToLogFile(url);
+        fileLogger.writeToLogFile("GET: " + url);
         CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method.GET, url, new JSONObject(), this, this);
-        jsonRequest.setTag(REQUEST_TAG);
+        jsonRequest.setTag("GetTeacher");
         mQueue.add(jsonRequest);
         synchronized (syncObject) {
             try {
+                fileLogger.writeToLogFile("Waiting for response...");
                 syncObject.wait();
-                fileLogger.writeToLogFile("Sync object is ready!");
                 return responseObject;
             } catch (InterruptedException e) {
+                fileLogger.writeToLogFile("Error:" + e.getMessage());
+                return new VolleyError("Error occurred");
+            } catch (Exception e) {
+                fileLogger.writeToLogFile("Error:" + e.getMessage());
                 return new VolleyError("Error occurred");
             }
         }

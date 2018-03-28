@@ -34,7 +34,6 @@ public class TeacherHttpRequestTask extends AsyncTask<String, Object, Object>{
 
     @Override
     protected Object doInBackground(String... params) {
-        fileLogger.writeToLogFile("dddddd");
         Object response = null;
         String methodName = params[0];
         try {
@@ -45,13 +44,12 @@ public class TeacherHttpRequestTask extends AsyncTask<String, Object, Object>{
                     break;
                 case "getTeacherByUID":
                     uid = params[1];
-                    fileLogger.writeToLogFile("UID: " + uid);
                     response = teacherService.getTeacherByUid(uid);
-                    fileLogger.writeToLogFile("Response: "+ response.toString());
                     break;
             }
 
         } catch (InterruptedException e) {
+
             e.printStackTrace();
         }
         return response;
@@ -65,6 +63,7 @@ public class TeacherHttpRequestTask extends AsyncTask<String, Object, Object>{
     @Override
     protected void onPostExecute(Object result) {
         super.onPostExecute(result);
+        fileLogger.writeToLogFile("Teacher http request task onPostExecute.");
         delegate.processFinish(result);
     }
 }

@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
         handler = new Handler();
         connectUsbDevice();
-        fileLogger.writeToLogFile("Hello!");
+        fileLogger.writeToLogFile("Login detected.");
     }
 
     public void connectUsbDevice() {
@@ -104,12 +104,13 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 data = new String(arg0, "UTF-8");
                 data.concat("/n");
-                fileLogger.writeToLogFile("Received uid: " + data);
+                fileLogger.writeToLogFile("Detected card, uid: " + data);
                 TeacherHttpRequestTask asyncTask = new TeacherHttpRequestTask(new IAsyncResponse() {
                     @Override
                     public void processFinish(Object output){
                         try {
                              if(((JSONObject)output).getJSONObject("data") != null) {
+                                 fileLogger.writeToLogFile("Card is registered.");
                                  Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                  intent.putExtra("teacher_uid", data);
                                  startActivity(intent);

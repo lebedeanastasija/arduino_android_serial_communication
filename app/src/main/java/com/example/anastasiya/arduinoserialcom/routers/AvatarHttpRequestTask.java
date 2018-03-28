@@ -10,12 +10,12 @@ import com.example.anastasiya.arduinoserialcom.services.AvatarService;
 public class AvatarHttpRequestTask  extends AsyncTask<String, Object, Object> {
     IAsyncResponse delegate = null;
     private AvatarService avatarService;
-    //private FileLogger fileLogger;
+    private FileLogger fileLogger;
 
     public AvatarHttpRequestTask(IAsyncResponse delegate, Context context, Activity activity){
         this.delegate = delegate;
         avatarService = AvatarService.getInstance(context, activity);
-        //fileLogger = FileLogger.getInstance(context, activity);
+        fileLogger = FileLogger.getInstance(context, activity);
     }
 
     @Override
@@ -35,6 +35,7 @@ public class AvatarHttpRequestTask  extends AsyncTask<String, Object, Object> {
                     String pupilId = params[1];
                     String data = params[2];
                     String name = params[3];
+                    fileLogger.writeToLogFile("Uploading pupil avatar, pupil id: " + pupilId);
                     response = avatarService.uploadPupilAvatar(pupilId, data, name);
                     break;
             }
