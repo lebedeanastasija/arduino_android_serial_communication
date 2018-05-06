@@ -8,7 +8,11 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.anastasiya.arduinoserialcom.helpers.FileLogger;
@@ -34,7 +38,13 @@ public class PupilActivity extends AppCompatActivity {
     TextView tvClass;
     TextView tvSubject;
     ImageView imvPupil;
+    RadioGroup rgScoreType;
+    NumberPicker npScore;
+
     Resources res;
+
+    String scoreType;
+    Integer scoreValue = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +62,19 @@ public class PupilActivity extends AppCompatActivity {
         tvClass = (TextView) findViewById(R.id.tvClass);
         tvSubject = (TextView) findViewById(R.id.tvTSubject);
         imvPupil = (ImageView) findViewById(R.id.image_pupil);
+        rgScoreType = (RadioGroup) findViewById(R.id.rgScoreType);
+        rgScoreType.check(R.id.rbClassWork);
+        npScore = (NumberPicker) findViewById(R.id.npScore);
+        npScore.setMinValue(1);
+        npScore.setMaxValue(10);
+        npScore.setValue(scoreValue);
+
+        npScore.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal){
+                scoreValue = newVal;
+            }
+        });
 
         Intent intent = getIntent();
         String uid = intent.getStringExtra("uid");
@@ -80,5 +103,24 @@ public class PupilActivity extends AppCompatActivity {
             }
         }, context, activity);
         asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getPupilByUid", uid);
+    }
+
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+
+        switch(view.getId()) {
+            case R.id.rbClassWork:
+                if (checked)
+                    scoreType = "class";
+                    break;
+            case R.id.rbTestWork:
+                if (checked)
+                    scoreType = "test";
+                    break;
+            case R.id.rbHomeWork:
+                if (checked)
+                    scoreType = "home";
+                    break;
+        }
     }
 }

@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">Electronic Diary</string>
+
+    <!-- Actions and Buttons -->
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="create">Create</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+
     <string name="attach_card">Attach a student card for grading his skills.</string>
     <string name="unknown_teacher_card">No teachers with such UID on the server!</string>
     <string name="attach_teacher_card">Attach your teacher card to login the system.</string>
@@ -18,19 +24,24 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
+    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."
     </string>
 
-    <!-- Strings related to add pupil  -->
+    <!-- Strings related to pupil and teacher  -->
     <string name="surname">Surname</string>
     <string name="name">Name</string>
     <string name="patronymic">Patronymic</string>
     <string name="card_uid">Card UID</string>
-    <string name="school_class">Class</string>
     <string name="avatar">Avatar</string>
-    <string name="create">Create</string>
-    <string name="cancel">Cancel</string>
+
+    <!-- Strings related to school -->
+    <string name="subject">Subject</string>
+    <string name="school_class">Class</string>
+    <string name="score_type">Score type</string>
+    <string name="class_work">Class work</string>
+    <string name="home_work">Home work</string>
+    <string name="test_work">Test work</string>
+    <string name="score">Score</string>
 
     <!-- Strings for tests -->
     <string name="received_uids">Received uids:</string>
