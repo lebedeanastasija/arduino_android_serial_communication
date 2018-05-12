@@ -9,44 +9,33 @@ import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
-import android.support.design.widget.NavigationView;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v4.app.NavUtils;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.example.anastasiya.arduinoserialcom.helpers.FileLogger;
-import com.example.anastasiya.arduinoserialcom.routers.PupilHttpRequestTask;
 import com.example.anastasiya.arduinoserialcom.routers.IAsyncResponse;
+import com.example.anastasiya.arduinoserialcom.routers.TeacherHttpRequestTask;
 import com.felhr.usbserial.UsbSerialDevice;
 import com.felhr.usbserial.UsbSerialInterface;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.io.UnsupportedEncodingException;
-import android.os.Handler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity {
-    private Context context;
-    private Activity activity;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Iterator;
 
+public class TeacherLoginActivity extends AppCompatActivity {
     private FileLogger fileLogger;
-
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mToggle;
-    private NavigationView mNavigation;
     private static String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
 
-    TextView tv;
+    TextView loginInfo;
     TextView readerInfo;
 
     UsbManager usbManager;
@@ -55,83 +44,25 @@ public class MainActivity extends AppCompatActivity {
     UsbSerialDevice serialPort;
     Handler handler;
     String data = null;
-    String teacher_uid = null;
-    Boolean activityIsActive = true;
+    Context context;
+    Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_teacher_login);
+
+        loginInfo = (TextView) findViewById(R.id.tvLoginInfo);
+        loginInfo.setText(R.string.attach_teacher_card);
+        readerInfo = (TextView) findViewById(R.id.tvReaderInfo);
+
+        context = this.getApplicationContext();
         activity = this;
-        context = activity.getApplicationContext();
         fileLogger = FileLogger.getInstance(this.getApplicationContext(), this);
-
-        final Intent intent = getIntent();
-        teacher_uid = intent.getStringExtra("teacher_uid");
-        fileLogger.writeToLogFile("main activity for teacher with uid: " + teacher_uid);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
-        mDrawerLayout.addDrawerListener(mToggle);
-        mToggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mNavigation = (NavigationView) findViewById(R.id.navigation_view);
-        mNavigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                int id = menuItem.getItemId();
-                switch (id) {
-                    case R.id.nav_profile:
-                        Intent profile_intent = new Intent(MainActivity.this, ProfileActivity.class);
-                        profile_intent.putExtra("teacher_uid", teacher_uid);
-                        startActivity(profile_intent);
-                        break;
-                    case R.id.nav_class:
-                        Intent class_intent = new Intent(MainActivity.this, ClassActivity.class);
-                        class_intent.putExtra("teacher_uid", teacher_uid);
-                        startActivity(class_intent);
-                        break;
-                }
-                return false;
-            }
-        });
-
-        tv = (TextView) findViewById(R.id.textView);
-        readerInfo = (TextView) findViewById(R.id.readerInfo);
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
         handler = new Handler();
         connectUsbDevice();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        activityIsActive = false;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        activityIsActive = true;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_activity_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(mToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        switch (item.getItemId()) {
-            case R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+        fileLogger.writeToLogFile("Login detected.");
     }
 
     public void connectUsbDevice() {
@@ -163,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
         ((Activity) this).runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                tv.setText("");
                 readerInfo.setText(R.string.no_rfid_readers);
             }
         });
@@ -172,29 +102,36 @@ public class MainActivity extends AppCompatActivity {
     UsbSerialInterface.UsbReadCallback mCallback = new UsbSerialInterface.UsbReadCallback() {
         @Override
         public void onReceivedData(byte[] arg0) {
-            if(activityIsActive) {
-                try {
-                    data = new String(arg0, "UTF-8");
-                    data.concat("/n");
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            tv.append(data);
-                            Intent intent = new Intent(MainActivity.this, PupilActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent.putExtra("uid", data);
-                            startActivity(intent);
+            try {
+                data = new String(arg0, "UTF-8");
+                data.concat("/n");
+                fileLogger.writeToLogFile("Detected card, uid: " + data);
+                TeacherHttpRequestTask asyncTask = new TeacherHttpRequestTask(new IAsyncResponse() {
+                    @Override
+                    public void processFinish(Object output){
+                        try {
+                             if(((JSONObject)output).getJSONObject("data") != null) {
+                                 fileLogger.writeToLogFile("Card is registered.");
+                                 Intent intent = new Intent(TeacherLoginActivity.this, MainActivity.class);
+                                 intent.putExtra("teacher_uid", data);
+                                 startActivity(intent);
+                                 TeacherLoginActivity.this.finish();
+                                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.slide_out_right);
+                                 System.exit(0);
+                             } else {
+                                 fileLogger.writeToLogFile(R.string.unknown_teacher_card + "\n" + R.string.attach_teacher_card);
+                             }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    }, 500);
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
+                    }
+                }, context, activity);
+                asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getTeacherByUID", data);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
         }
     };
-
-
 
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -211,9 +148,7 @@ public class MainActivity extends AppCompatActivity {
                             serialPort.setStopBits(UsbSerialInterface.STOP_BITS_1);
                             serialPort.setParity(UsbSerialInterface.PARITY_NONE);
                             serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF);
-                            tv.setText(R.string.received_uids);
-                            tv.append("\n");
-                            readerInfo.setText(R.string.attach_pupil_card);
+                            readerInfo.setText(R.string.rfid_reader_found);
                             serialPort.read(mCallback);
                         } else {
                             Log.d("SERIAL", "PORT NOT OPEN");
@@ -225,10 +160,20 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("SERIAL", "PERM NOT GRANTED");
                 }
             } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_ATTACHED)) {
-               connectUsbDevice();
+                connectUsbDevice();
             } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
                 disconnectUsbDevice();
             }
         }
     };
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

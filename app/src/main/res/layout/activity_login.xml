@@ -1,48 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.anastasiya.arduinoserialcom.LoginActivity">
 
-    <ImageView
-        android:id="@+id/imgTeacherCard"
-        android:layout_width="179dp"
-        android:layout_height="189dp"
-        app:srcCompat="?android:attr/actionModeSelectAllDrawable"
-        tools:layout_editor_absoluteX="103dp"
-        tools:layout_editor_absoluteY="53dp"
-        android:layout_marginTop="88dp"
+    <Button
+        android:id="@+id/btnChooseTeacher"
+        android:layout_width="220dp"
+        android:layout_height="80dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:id="@+id/tvLoginInfo"
-        android:layout_width="183dp"
-        android:layout_height="94dp"
-        android:layout_alignLeft="@+id/imgTeacherCard"
-        android:layout_alignStart="@+id/imgTeacherCard"
-        android:layout_below="@+id/imgTeacherCard"
-        android:layout_marginTop="31dp"
-        android:text="@string/attach_teacher_card"
-        android:textAlignment="center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:background="@color/colorPrimary"
+        android:onClick="ChooseTeacher"
+        android:text="@string/choose_teacher"
+        android:textColor="@android:color/white"
         android:textSize="18sp"
-        android:typeface="serif"
-        tools:layout_editor_absoluteX="103dp"
-        tools:layout_editor_absoluteY="278dp"/>
+        tools:layout_editor_absoluteX="82dp"
+        tools:layout_editor_absoluteY="64dp" />
 
-    <TextView
-        android:id="@+id/tvReaderInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/tvLoginInfo"
-        android:layout_alignLeft="@+id/tvLoginInfo"
-        android:layout_alignRight="@+id/tvLoginInfo"
-        android:layout_alignStart="@+id/tvLoginInfo"
-        android:layout_below="@+id/tvLoginInfo"
-        android:layout_marginTop="21dp"
-        android:text="TextView"
-        android:textAlignment="center"
-        android:textSize="14sp" />
-</android.widget.RelativeLayout>
+    <Button
+        android:id="@+id/btnChooseAdmin"
+        android:layout_width="220dp"
+        android:layout_height="78dp"
+        android:layout_alignLeft="@+id/btnChooseTeacher"
+        android:layout_alignStart="@+id/btnChooseTeacher"
+        android:layout_centerVertical="true"
+        android:onClick="ChooseAdmin"
+        android:text="@string/choose_admin"
+        android:textSize="18sp"
+        tools:layout_editor_absoluteX="79dp"
+        tools:layout_editor_absoluteY="198dp" />
+</RelativeLayout>

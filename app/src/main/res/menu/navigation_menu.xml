@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/nav_profile"
         android:icon="@mipmap/ic_settings_black_24dp"
-        android:title="Teacher profile"
+        android:title="@string/location_profile"
         app:showAsAction="always"/>
     <item android:id="@+id/nav_class"
         android:icon="@mipmap/ic_group_black_24dp"
-        android:title="Class"/>
+        android:title="@string/location_class"/>
 </menu>

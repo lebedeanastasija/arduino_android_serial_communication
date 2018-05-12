@@ -28,7 +28,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/image_teacher"
-        tools:text="Surname" />
+        tools:text="@string/surname" />
 
     <TextView
         android:id="@+id/tvTName"
@@ -38,7 +38,7 @@
         android:layout_alignStart="@+id/tvTSurname"
         android:layout_below="@+id/tvTSurname"
         android:layout_marginTop="10dp"
-        android:text="Name"/>
+        android:text="@string/name"/>
 
     <TextView
         android:id="@+id/tvTPatronymic"
@@ -48,7 +48,7 @@
         android:layout_alignStart="@+id/tvTName"
         android:layout_below="@+id/tvTName"
         android:layout_marginTop="10dp"
-        android:text="Patronymic"/>
+        android:text="@string/patronymic"/>
 
     <TextView
         android:id="@+id/tvTUID"
@@ -58,7 +58,7 @@
         android:layout_alignStart="@+id/tvTPatronymic"
         android:layout_below="@+id/tvTPatronymic"
         android:layout_marginTop="10dp"
-        android:text="UID"/>
+        android:text="@string/card_uid"/>
 
     <TextView
         android:id="@+id/tvTSubject"
@@ -68,6 +68,6 @@
         android:layout_alignStart="@+id/tvTUID"
         android:layout_below="@+id/tvTUID"
         android:layout_marginTop="10dp"
-        android:text="Subject"/>
+        android:text="@string/subject"/>
 
 </RelativeLayout>

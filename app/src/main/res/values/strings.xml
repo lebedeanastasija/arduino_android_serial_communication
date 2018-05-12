@@ -1,49 +1,69 @@
 <resources>
-    <string name="app_name">Electronic Diary</string>
+    <string name="app_name">Электронный Дневник</string>
 
     <!-- Actions and Buttons -->
-    <string name="open">Open</string>
-    <string name="close">Close</string>
-    <string name="create">Create</string>
-    <string name="cancel">Cancel</string>
-    <string name="save">Save</string>
+    <string name="open">Открыть</string>
+    <string name="close">Закрыть</string>
+    <string name="create">Создать</string>
+    <string name="cancel">Отмена</string>
+    <string name="save">Сохранить</string>
 
-    <string name="attach_card">Attach a student card for grading his skills.</string>
-    <string name="unknown_teacher_card">No teachers with such UID on the server!</string>
-    <string name="attach_teacher_card">Attach your teacher card to login the system.</string>
-    <string name="no_rfid_readers">No RFID readers found!</string>
-    <string name="rfid_reader_found">RFID reader detected</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="attach_pupil_card">Для выставления оценки приложите карту ученика.</string>
+    <string name="unknown_teacher_card">Учитель с такой картой не найден!</string>
+    <string name="attach_teacher_card">Приложите карту для входа в систему.</string>
+    <string name="no_rfid_readers">Считыватель не найден!</string>
+    <string name="rfid_reader_found">Считыватель подключен.</string>
+    <string name="title_activity_login">Войти</string>
 
+    <!-- Card -->
+    <string name="attach_card">Приложите карту для входа в кабинет</string>
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
+    <string name="sign_in">Вход</string>
+    <string name="choose_admin">Я администратор</string>
+    <string name="choose_teacher">Я учитель</string>
+    <string name="prompt_login">Логин</string>
+    <string name="prompt_password">Пароль</string>
+    <string name="action_sign_in">Войти или зарегистрироваться</string>
+
+    <string name="action_sign_in_short">Войти</string>
+    <string name="error_invalid_email">Этот e-mail невалиден!</string>
+    <string name="error_invalid_password">Очень короткий пароль!</string>
+    <string name="error_incorrect_password">Невалидный пароль!</string>
+    <string name="error_field_required">Обязательное поле!</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."
     </string>
 
     <!-- Strings related to pupil and teacher  -->
-    <string name="surname">Surname</string>
-    <string name="name">Name</string>
-    <string name="patronymic">Patronymic</string>
-    <string name="card_uid">Card UID</string>
-    <string name="avatar">Avatar</string>
+    <string name="surname">Фамилия</string>
+    <string name="name">Имя</string>
+    <string name="patronymic">Отчество</string>
+    <string name="card_uid">ID карты</string>
+    <string name="avatar">Аватар</string>
+
+    <!-- Teacher -->
+    <string name="teacher">Учитель</string>
+
+    <!-- Administrator -->
+    <string name="admin">Администратор</string>
+    <string name="add_pupil">Добавить ученика</string>
 
     <!-- Strings related to school -->
-    <string name="subject">Subject</string>
-    <string name="school_class">Class</string>
-    <string name="score_type">Score type</string>
-    <string name="class_work">Class work</string>
-    <string name="home_work">Home work</string>
-    <string name="test_work">Test work</string>
-    <string name="score">Score</string>
+    <string name="subject">Предмет</string>
+    <string name="school_class">Класс</string>
+    <string name="score_type">Тип оценки</string>
+    <string name="class_work">Классная работа</string>
+    <string name="home_work">Домашняя работа</string>
+    <string name="test_work">Тестовая работа</string>
+    <string name="score">Оценка</string>
+
+    <!-- Locations names -->
+    <string name="location_main">Главная</string>
+    <string name="location_pupil">Выставление оценки</string>
+    <string name="location_class">Ученики</string>
+    <string name="location_profile">Мой профиль</string>
+    <string name="location_add_pupil">Добавить ученика</string>
 
     <!-- Strings for tests -->
-    <string name="received_uids">Received uids:</string>
-    <string name="avatar_path">Avatar path:</string>
+    <string name="received_uids">Найдены карты:</string>
+    <string name="avatar_path">Путь к аватару:</string>
 </resources>

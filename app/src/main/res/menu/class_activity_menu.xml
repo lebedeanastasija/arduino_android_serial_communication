@@ -6,6 +6,6 @@
     <item
         android:id="@+id/action_add_pupil"
         android:icon="@mipmap/ic_person_add_white_24dp"
-        android:title="Add pupil"
+        android:title="@string/add_pupil"
         app:showAsAction="always"/>
 </menu>
