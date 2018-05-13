@@ -62,6 +62,8 @@
     <string name="location_class">Ученики</string>
     <string name="location_profile">Мой профиль</string>
     <string name="location_add_pupil">Добавить ученика</string>
+    <string name="admin_location_teachers">Учителя</string>
+    <string name="admin_location_pupils">Ученики</string>
 
     <!-- Strings for tests -->
     <string name="received_uids">Найдены карты:</string>

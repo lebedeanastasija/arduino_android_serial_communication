@@ -22,46 +22,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/location_main"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
-            </intent-filter>
 
-            <meta-data
-                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
-                android:resource="@xml/device_filter" />
-        </activity>
-        <activity
-            android:name=".PupilActivity"
-            android:label="@string/location_pupil"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-        <activity
-            android:name=".ClassActivity"
-            android:label="@string/location_class"
-            android:launchMode="singleTop"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".TeacherLoginActivity"
             android:label="@string/teacher"
@@ -77,15 +48,41 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".LoginActivity" />
         </activity>
+
         <activity
-            android:name=".AdminLoginActivity"
-            android:label="@string/admin"
-            android:parentActivityName=".LoginActivity"
+            android:name=".MainActivity"
+            android:label="@string/location_main"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
+        </activity>
+
+        <activity
+            android:name=".PupilActivity"
+            android:label="@string/location_pupil"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".LoginActivity" />
+                android:value=".MainActivity" />
         </activity>
+
+        <activity
+            android:name=".ClassActivity"
+            android:label="@string/location_class"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
         <activity
             android:name=".ProfileActivity"
             android:label="@string/location_profile"
@@ -95,6 +92,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+
         <activity
             android:name=".AddPupilActivity"
             android:label="@string/location_add_pupil"
@@ -103,6 +101,31 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ClassActivity" />
+        </activity>
+
+        <activity
+            android:name=".AdminLoginActivity"
+            android:label="@string/admin"
+            android:parentActivityName=".LoginActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".LoginActivity" />
+        </activity>
+
+        <activity android:name=".AdminMainActivity"
+            android:label="@string/location_main"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".PupilsActivity"
+            android:label="@string/admin_location_pupils"
+            android:launchMode="singleTop"
+            android:parentActivityName=".AdminMainActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".AdminMainActivity" />
         </activity>
     </application>
 
