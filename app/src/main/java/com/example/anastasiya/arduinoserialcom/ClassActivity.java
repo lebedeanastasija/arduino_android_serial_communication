@@ -20,12 +20,18 @@ import com.example.anastasiya.arduinoserialcom.routers.TeacherHttpRequestTask;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ClassActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private String[] pupils = new String[0];
-    private String[] avatarIds = new String[0];
+
+    private List<String> pupils = new ArrayList<String>();
+    private List<String> pupilIds = new ArrayList<String>();
+    private List<String> avatarIds = new ArrayList<String>();
+
     private Context context;
     private Activity activity;
     private FileLogger fileLogger;
@@ -66,19 +72,18 @@ public class ClassActivity extends AppCompatActivity {
                         public void processFinish(Object output1) {
                             try {
                                 JSONArray jsonArray = ((JSONObject) output1).getJSONObject("data").getJSONArray("pupils");
-                                pupils = new String[jsonArray.length()];
-                                avatarIds = new String[jsonArray.length()];
                                 for(int i = 0; i < jsonArray.length(); i++) {
-                                    pupils[i] = jsonArray.getJSONObject(i).getString("surname") + " " +
+                                    pupils.add(jsonArray.getJSONObject(i).getString("surname") + " " +
                                             jsonArray.getJSONObject(i).getString("name") + " " +
-                                            jsonArray.getJSONObject(i).getString("patronymic");
+                                            jsonArray.getJSONObject(i).getString("patronymic"));
+                                    pupilIds.add(jsonArray.getJSONObject(i).getString("id"));
                                     if(!jsonArray.getJSONObject(i).getString("avatarId").equals("null")) {
-                                        avatarIds[i] = jsonArray.getJSONObject(i).getString("avatarId");
+                                        avatarIds.add(jsonArray.getJSONObject(i).getString("avatarId"));
                                     } else {
-                                        avatarIds[i] = "1";
+                                        avatarIds.add("1");
                                     }
                                 }
-                                mAdapter = new PupilsListAdapter(pupils, avatarIds, context, activity);
+                                mAdapter = new PupilsListAdapter(pupils, pupilIds, avatarIds, context, activity);
                                 mRecyclerView.setAdapter(mAdapter);
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -94,9 +99,9 @@ public class ClassActivity extends AppCompatActivity {
         asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getTeacherByUID", teacher_uid);
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.class_activity_menu, menu);
+        getMenuInflater().inflate(R.menu.pupils_activity_menu, menu);
         return true;
     }
 
@@ -114,5 +119,5 @@ public class ClassActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 }

@@ -58,10 +58,8 @@ public class AdminLoginActivity extends AppCompatActivity {
                         response = ((JSONObject) output).getJSONObject("data");
                         Intent intent = new Intent(AdminLoginActivity.this, AdminMainActivity.class);
                         startActivity(intent);
-                       AdminLoginActivity.this.finish();
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.slide_out_right);
-                        System.exit(0);
-
+                        AdminLoginActivity.this.finish();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

@@ -41,13 +41,15 @@ public class AdminMainActivity extends AppCompatActivity {
         mNavigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-            int id = menuItem.getItemId();
-            switch (id) {
-                case R.id.nav_pupils:
-                    startActivity(new Intent(AdminMainActivity.this, PupilsActivity.class));
-                    break;
-            }
-            return false;
+                int id = menuItem.getItemId();
+                switch (id) {
+
+                    case R.id.nav_pupils:
+                        Intent pupils_intent = new Intent(AdminMainActivity.this, PupilsActivity.class);
+                        startActivity(pupils_intent);
+                        break;
+                }
+                return false;
             }
         });
     }

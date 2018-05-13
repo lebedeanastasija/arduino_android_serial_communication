@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.anastasiya.arduinoserialcom.helpers.FileLogger;
 import com.example.anastasiya.arduinoserialcom.routers.AvatarHttpRequestTask;
@@ -116,7 +117,7 @@ public class AddPupilActivity extends AppCompatActivity {
 
                     }
                 }, context, activity);
-
+                Toast.makeText(context, avatarData, Toast.LENGTH_LONG).show();
                 asyncTask1.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "uploadPupilAvatar", pupilId, avatarData, avatarName);
             }
         }, context, activity);

@@ -37,6 +37,9 @@ public class PupilHttpRequestTask extends AsyncTask<String, Object, Object>{
                     String uid = params[1];
                     response = pupilService.getPupilByUid(uid);
                     break;
+                case "removeById":
+                    String id = params[1];
+                    response = pupilService.removeById(id);
                 case "getPupils":
                     response = pupilService.getPupils();
                     break;

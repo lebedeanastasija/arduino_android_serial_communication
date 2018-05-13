@@ -29,7 +29,7 @@
         android:textAlignment="textStart" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/ibDeletePupil"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"
@@ -38,7 +38,7 @@
         android:layout_marginEnd="12dp"
         android:layout_marginRight="12dp"
         android:elevation="0dp"
-        app:srcCompat="@android:drawable/ic_delete" />
+        app:srcCompat="@android:drawable/ic_menu_delete" />
 
 
 </android.widget.RelativeLayout>

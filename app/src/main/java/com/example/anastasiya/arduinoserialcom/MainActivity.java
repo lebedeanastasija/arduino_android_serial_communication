@@ -18,12 +18,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.example.anastasiya.arduinoserialcom.helpers.FileLogger;
-import com.example.anastasiya.arduinoserialcom.routers.PupilHttpRequestTask;
-import com.example.anastasiya.arduinoserialcom.routers.IAsyncResponse;
 import com.felhr.usbserial.UsbSerialDevice;
 import com.felhr.usbserial.UsbSerialInterface;
 
@@ -31,9 +28,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.io.UnsupportedEncodingException;
 import android.os.Handler;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     private Context context;
@@ -82,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 int id = menuItem.getItemId();
                 switch (id) {
                     case R.id.nav_profile:
-                        Intent profile_intent = new Intent(MainActivity.this, ProfileActivity.class);
+                        Intent profile_intent = new Intent(MainActivity.this, TeacherProfileActivity.class);
                         profile_intent.putExtra("teacher_uid", teacher_uid);
                         startActivity(profile_intent);
                         break;
