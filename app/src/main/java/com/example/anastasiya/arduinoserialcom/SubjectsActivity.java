@@ -53,7 +53,6 @@ public class SubjectsActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.rvSubjects);
         mLayoutManager = new LinearLayoutManager(context);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        getSubjects();
     }
 
     @Override

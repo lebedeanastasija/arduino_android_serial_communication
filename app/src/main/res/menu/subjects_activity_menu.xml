@@ -5,7 +5,7 @@
     tools:context="com.example.anastasiya.arduinoserialcom.PupilsActivity">
     <item
         android:id="@+id/action_add_subject"
-        android:icon="@mipmap/baseline_library_add_black_48"
+        android:icon="@mipmap/baseline_library_add_white_48"
         android:title="@string/add_subject"
         app:showAsAction="always"/>
 </menu>

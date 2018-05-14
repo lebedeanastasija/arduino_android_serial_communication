@@ -28,7 +28,7 @@ public class SubjectsListAdapter extends RecyclerView.Adapter<SubjectsListAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView mTextView;
-        public EditText mEditText;
+        public TextView mSubjectName;
         public View mView;
         public ImageButton mImageButton;
 
@@ -41,7 +41,7 @@ public class SubjectsListAdapter extends RecyclerView.Adapter<SubjectsListAdapte
             v.setOnClickListener(this);
 
             mTextView = (TextView) v.findViewById(R.id.tvSubjectItem);
-            mEditText = (EditText) v.findViewById(R.id.etSubjectItem);
+            mSubjectName = (TextView) v.findViewById(R.id.tvSubjectName);
             mImageButton = (ImageButton) v.findViewById(R.id.ibDeleteSubject);
             mImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -111,7 +111,7 @@ public class SubjectsListAdapter extends RecyclerView.Adapter<SubjectsListAdapte
         });
 
         holder.mTextView.setText(mShortNames.get(position));
-        holder.mEditText.setText(mSubjectNames.get(position));
+        holder.mSubjectName.setText(mSubjectNames.get(position));
     }
 
     @Override
