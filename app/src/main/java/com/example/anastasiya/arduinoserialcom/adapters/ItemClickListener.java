@@ -1,4 +1,4 @@
-package com.example.anastasiya.arduinoserialcom;
+package com.example.anastasiya.arduinoserialcom.adapters;
 
 import android.view.View;
 

@@ -4,4 +4,14 @@
     <item android:id="@+id/nav_pupils"
         android:icon="@mipmap/ic_group_black_24dp"
         android:title="@string/admin_location_pupils"/>
+    <item android:id="@+id/nav_teachers"
+        android:icon="@mipmap/baseline_school_black_48"
+        android:title="@string/admin_location_teachers"/>
+    <item android:id="@+id/nav_subjects"
+        android:icon="@mipmap/baseline_collections_bookmark_black_48"
+        android:title="@string/admin_location_subjects"/>
+    <item
+        android:id="@+id/nav_schedule"
+        android:icon="@mipmap/baseline_event_note_black_48"
+        android:title="@string/admin_location_schedule"/>
 </menu>

@@ -9,8 +9,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.example.anastasiya.arduinoserialcom.CustomJSONObjectRequest;
-import com.example.anastasiya.arduinoserialcom.CustomVolleyRequestQueue;
+import com.example.anastasiya.arduinoserialcom.routers.CustomJSONObjectRequest;
+import com.example.anastasiya.arduinoserialcom.routers.CustomVolleyRequestQueue;
 import com.example.anastasiya.arduinoserialcom.R;
 
 import org.json.JSONException;

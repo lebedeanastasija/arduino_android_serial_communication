@@ -48,6 +48,10 @@ public class AdminMainActivity extends AppCompatActivity {
                         Intent pupils_intent = new Intent(AdminMainActivity.this, PupilsActivity.class);
                         startActivity(pupils_intent);
                         break;
+                    case R.id.nav_subjects:
+                        Intent subjects_intent = new Intent(AdminMainActivity.this, SubjectsActivity.class);
+                        startActivity(subjects_intent);
+                        break;
                 }
                 return false;
             }

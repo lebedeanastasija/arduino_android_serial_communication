@@ -8,144 +8,109 @@
 
     <TextView
         android:id="@+id/label_create_surname"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:gravity="start"
-        android:paddingTop="5dp"
-        android:text="@string/surname"
-        android:textAlignment="textStart" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/surname" />
 
     <EditText
         android:id="@+id/input_create_surname"
-        android:layout_width="240dp"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_alignLeft="@+id/input_create_name"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/input_create_name"
+        android:layout_below="@id/label_create_surname"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:inputType="text" />
 
 
     <TextView
         android:id="@+id/label_create_name"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_alignLeft="@+id/label_create_surname"
-        android:layout_alignStart="@+id/label_create_surname"
-        android:layout_below="@+id/label_create_surname"
-        android:gravity="start"
-        android:paddingTop="5dp"
-        android:text="@string/name"
-        android:textAlignment="textStart" />
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_below="@+id/input_create_surname"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="@string/name" />
 
     <EditText
         android:id="@+id/input_create_name"
-        android:layout_width="240dp"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_alignLeft="@+id/input_create_patronymic"
-        android:layout_alignStart="@+id/input_create_patronymic"
-        android:layout_below="@+id/input_create_surname"
+        android:layout_below="@+id/label_create_name"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:inputType="text" />
 
     <TextView
         android:id="@+id/label_create_patronymic"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_alignLeft="@+id/label_create_name"
-        android:layout_alignStart="@+id/label_create_name"
-        android:layout_below="@+id/label_create_name"
-        android:paddingTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_below="@+id/input_create_name"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:text="@string/patronymic" />
 
     <EditText
         android:id="@+id/input_create_patronymic"
-        android:layout_width="240dp"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_toEndOf="@+id/label_create_patronymic"
-        android:layout_toRightOf="@+id/label_create_patronymic"
-        android:inputType="text"
-        android:layout_above="@+id/input_create_uid"
-        android:layout_below="@+id/input_create_name" />
-
-    <TextView
-        android:id="@+id/label_create_uid"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_alignLeft="@+id/label_create_patronymic"
-        android:layout_alignStart="@+id/label_create_patronymic"
         android:layout_below="@+id/label_create_patronymic"
-        android:paddingTop="5dp"
-        android:text="@string/card_uid" />
-
-    <EditText
-        android:id="@+id/input_create_uid"
-        android:layout_width="240dp"
-        android:layout_height="40dp"
-        android:inputType="text"
-        android:layout_above="@+id/label_class_value"
-        android:layout_alignLeft="@+id/input_create_name"
-        android:layout_alignStart="@+id/input_create_name" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:inputType="text" />
 
     <TextView
         android:id="@+id/label_create_class"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_alignLeft="@+id/label_create_uid"
-        android:layout_alignStart="@+id/label_create_uid"
-        android:layout_below="@+id/label_create_uid"
-        android:paddingTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_below="@+id/input_create_patronymic"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="170dp"
         android:text="@string/school_class" />
 
-    <TextView
-        android:id="@+id/label_class_value"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/input_create_class"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_alignBottom="@+id/label_create_class"
-        android:layout_alignLeft="@+id/input_create_uid"
-        android:layout_alignStart="@+id/input_create_uid"
-        android:paddingTop="10dp" />
+        android:layout_below="@+id/label_create_class"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="170dp"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/label_create_card"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_alignLeft="@+id/input_create_class"
+        android:layout_alignStart="@+id/input_create_class"
+        android:layout_below="@+id/input_create_class"
+        android:layout_marginRight="170dp"
+        android:text="@string/card_uid" />
+
+    <EditText
+        android:id="@+id/input_create_card"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/label_create_card"
+        android:layout_alignStart="@+id/label_create_card"
+        android:layout_below="@+id/label_create_card"
+        android:layout_marginRight="170dp"
+        android:inputType="text" />
 
     <TextView
         android:id="@+id/label_create_avatar"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:paddingTop="10dp"
+        android:layout_height="24dp"
         android:text="@string/avatar"
-        android:layout_below="@+id/label_create_class"
-        android:layout_alignLeft="@+id/label_create_class"
-        android:layout_alignStart="@+id/label_create_class"
-        android:layout_marginTop="14dp" />
-
-    <Button
-        android:id="@+id/button_create_pupil"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="81dp"
-        android:background="@color/colorPrimary"
-        android:text="@string/create"
-        android:textColor="@android:color/white"
-        android:layout_below="@+id/button_add_pupil_avatar"
-        android:layout_alignLeft="@+id/label_create_avatar"
-        android:layout_alignStart="@+id/label_create_avatar"
-        android:onClick="CreatePupil"/>
-
-    <Button
-        android:id="@+id/cancel_create_pupil"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button_create_pupil"
-        android:layout_alignBottom="@+id/button_create_pupil"
-        android:layout_alignEnd="@+id/input_create_uid"
-        android:layout_alignRight="@+id/input_create_uid"
-        android:background="@android:color/darker_gray"
-        android:text="@string/cancel"
-        android:textColor="@android:color/white" />
+        android:layout_below="@+id/input_create_patronymic"
+        android:layout_above="@+id/input_create_class"
+        android:layout_alignRight="@+id/input_create_patronymic"
+        android:layout_alignEnd="@+id/input_create_patronymic"
+        android:layout_alignLeft="@+id/image_add_pupil"
+        android:layout_alignStart="@+id/image_add_pupil" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/button_add_pupil_avatar"
@@ -155,17 +120,42 @@
         app:fabSize="mini"
         app:srcCompat="@android:drawable/ic_menu_camera"
         android:layout_below="@+id/label_create_avatar"
-        android:layout_alignRight="@+id/label_create_avatar"
-        android:layout_alignEnd="@+id/label_create_avatar" />
+        android:layout_alignLeft="@+id/label_create_avatar"
+        android:layout_alignStart="@+id/label_create_avatar" />
 
     <ImageView
         android:id="@+id/image_add_pupil"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_alignLeft="@+id/label_class_value"
-        android:layout_alignStart="@+id/label_class_value"
-        android:layout_below="@+id/label_class_value"
+        android:contentDescription="@string/avatar"
         app:srcCompat="@mipmap/ic_person_black_24dp"
-        android:contentDescription="@string/avatar"/>
+        android:layout_below="@+id/label_create_avatar"
+        android:layout_alignRight="@+id/input_create_patronymic"
+        android:layout_alignEnd="@+id/input_create_patronymic" />
+
+    <Button
+        android:id="@+id/button_create_pupil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/cancel_create_pupil"
+        android:layout_alignLeft="@+id/cancel_create_pupil"
+        android:layout_alignStart="@+id/cancel_create_pupil"
+        android:background="@color/colorPrimary"
+        android:onClick="CreatePupil"
+        android:text="@string/create"
+        android:textColor="@android:color/white"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/cancel_create_pupil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/darker_gray"
+        android:text="@string/cancel"
+        android:textColor="@android:color/white"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

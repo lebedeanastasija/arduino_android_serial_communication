@@ -1,4 +1,4 @@
-package com.example.anastasiya.arduinoserialcom;
+package com.example.anastasiya.arduinoserialcom.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,13 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.anastasiya.arduinoserialcom.helpers.FileLogger;
+import com.example.anastasiya.arduinoserialcom.R;
 import com.example.anastasiya.arduinoserialcom.routers.IAsyncResponse;
 import com.example.anastasiya.arduinoserialcom.routers.PupilHttpRequestTask;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.List;
 

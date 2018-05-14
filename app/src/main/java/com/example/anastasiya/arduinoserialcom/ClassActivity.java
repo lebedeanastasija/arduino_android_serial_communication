@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuItem;
 
+import com.example.anastasiya.arduinoserialcom.adapters.PupilsListAdapter;
 import com.example.anastasiya.arduinoserialcom.helpers.FileLogger;
 import com.example.anastasiya.arduinoserialcom.routers.IAsyncResponse;
 import com.example.anastasiya.arduinoserialcom.routers.PupilHttpRequestTask;

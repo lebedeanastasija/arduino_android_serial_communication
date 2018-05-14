@@ -1,7 +1,6 @@
 package com.example.anastasiya.arduinoserialcom.services;
 
 import android.app.Activity;
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.res.Resources;
 
@@ -9,8 +8,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.example.anastasiya.arduinoserialcom.CustomJSONObjectRequest;
-import com.example.anastasiya.arduinoserialcom.CustomVolleyRequestQueue;
+import com.example.anastasiya.arduinoserialcom.routers.CustomJSONObjectRequest;
+import com.example.anastasiya.arduinoserialcom.routers.CustomVolleyRequestQueue;
 import com.example.anastasiya.arduinoserialcom.R;
 import com.example.anastasiya.arduinoserialcom.helpers.FileLogger;
 
@@ -84,7 +83,7 @@ public class PupilService implements Response.Listener<JSONObject>, Response.Err
         }
     }
 
-    public Object create(String surname, String name, String patronymic, String UID, Integer classId, Integer avatarId) {
+    public Object create(String surname, String name, String patronymic, Integer cardId, Integer classId, Integer avatarId) {
         responseObject = null;
         String url = res.getString(R.string.server_address) + "/pupils";
         JSONObject pupil = new JSONObject();
@@ -92,12 +91,17 @@ public class PupilService implements Response.Listener<JSONObject>, Response.Err
             pupil.put("surname", surname);
             pupil.put("name", name);
             pupil.put("patronymic", patronymic);
-            pupil.put("UID", UID);
-            pupil.put("classId", classId);
+            if(cardId != null) {
+                pupil.put("cardId", cardId);
+            }
+            if(classId != null) {
+                pupil.put("classId", classId);
+            }
             pupil.put("avatarId", avatarId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method.POST, url, pupil, this, this);
         jsonRequest.setTag(REQUEST_TAG);
 

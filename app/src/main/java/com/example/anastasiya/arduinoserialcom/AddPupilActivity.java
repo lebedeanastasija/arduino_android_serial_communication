@@ -44,12 +44,12 @@ public class AddPupilActivity extends AppCompatActivity {
     EditText etSurname;
     EditText etName;
     EditText etPatronymic;
-    EditText etUID;
+    EditText etCardId;
+    EditText etClassId;
 
     Integer REQUEST_CAMERA=1, SELECT_FILE=0;
     String avatarData;
     String avatarName;
-    String classId = "1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,8 @@ public class AddPupilActivity extends AppCompatActivity {
         etSurname = (EditText) findViewById(R.id.input_create_surname);
         etName = (EditText) findViewById(R.id.input_create_name);
         etPatronymic = (EditText) findViewById(R.id.input_create_patronymic);
-        etUID = (EditText) findViewById(R.id.input_create_uid);
+        etCardId = (EditText) findViewById(R.id.input_create_card);
+        etClassId = (EditText) findViewById(R.id.input_create_class);
 
         FloatingActionButton fabAvatar;
         fabAvatar = (FloatingActionButton) findViewById(R.id.button_add_pupil_avatar);
@@ -110,24 +111,25 @@ public class AddPupilActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                if(avatarData != null && !avatarData.isEmpty()) {
+                    AvatarHttpRequestTask asyncTask1 = new AvatarHttpRequestTask(new IAsyncResponse() {
+                        @Override
+                        public void processFinish(Object output1) {
 
-                AvatarHttpRequestTask asyncTask1 = new AvatarHttpRequestTask(new IAsyncResponse() {
-                    @Override
-                    public void processFinish(Object output1) {
+                        }
+                    }, context, activity);
 
-                    }
-                }, context, activity);
-                Toast.makeText(context, avatarData, Toast.LENGTH_LONG).show();
-                asyncTask1.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "uploadPupilAvatar", pupilId, avatarData, avatarName);
+                    asyncTask1.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "uploadPupilAvatar", pupilId, avatarData, avatarName);
+                }
             }
         }, context, activity);
 
         String surname = etSurname.getText().toString();
         String name = etName.getText().toString();
         String patronymic = etPatronymic.getText().toString();
-        String UID = etUID.getText().toString();
-
-        asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "createPupil", surname, name, patronymic, UID, classId);
+        String cardId = etCardId.getText().toString();
+        String classId = etClassId.getText().toString();
+        asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "createPupil", surname, name, patronymic, cardId, classId);
     }
 
     @Override

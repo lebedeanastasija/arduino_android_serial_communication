@@ -28,7 +28,6 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -113,12 +112,14 @@
                 android:value=".LoginActivity" />
         </activity>
 
-        <activity android:name=".AdminMainActivity"
+        <activity
+            android:name=".AdminMainActivity"
             android:label="@string/location_main"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".PupilsActivity"
+        <activity
+            android:name=".PupilsActivity"
             android:label="@string/admin_location_pupils"
             android:launchMode="singleTop"
             android:parentActivityName=".AdminMainActivity"
@@ -126,6 +127,26 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".AdminMainActivity" />
+        </activity>
+
+        <activity
+            android:name=".SubjectsActivity"
+            android:label="@string/admin_location_subjects"
+            android:parentActivityName=".AdminMainActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".AdminMainActivity" />
+        </activity>
+
+        <activity
+            android:name=".AddSubjectActivity"
+            android:label="@string/location_add_subject"
+            android:parentActivityName=".SubjectsActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".SubjectsActivity" />
         </activity>
     </application>
 

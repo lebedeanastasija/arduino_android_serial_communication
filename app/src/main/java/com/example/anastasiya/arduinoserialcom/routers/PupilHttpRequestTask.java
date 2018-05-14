@@ -51,10 +51,17 @@ public class PupilHttpRequestTask extends AsyncTask<String, Object, Object>{
                     String surname = params[1];
                     String name = params[2];
                     String patronymic = params[3];
-                    String newPupilUID = params[4];
-                    Integer newPupilClassId = Integer.parseInt(params[5]);
-                    Integer newPupilAvatarId = 1;
-                    response = pupilService.create(surname, name, patronymic, newPupilUID, newPupilClassId, newPupilAvatarId);
+                    Integer cardId = null;
+                    Integer newClassId = null;
+                    Integer avatarId = 1;
+                    if(params[4] != null && !params[4].isEmpty()) {
+                        cardId = Integer.parseInt(params[4]);
+                    }
+                    if(params[5] != null && !params[5].isEmpty()) {
+                        newClassId = Integer.parseInt(params[5]);
+                    }
+
+                    response = pupilService.create(surname, name, patronymic, cardId, newClassId, avatarId);
                     break;
             }
 

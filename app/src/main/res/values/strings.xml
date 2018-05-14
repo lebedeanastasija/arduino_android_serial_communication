@@ -46,6 +46,9 @@
     <!-- Administrator -->
     <string name="admin">Администратор</string>
     <string name="add_pupil">Добавить ученика</string>
+    <string name="add_subject">Добавить предмет</string>
+    <string name="add_teacher">Добавить ученика</string>
+    <string name="add_schedule">Добавить расписание</string>
 
     <!-- Strings related to school -->
     <string name="subject">Предмет</string>
@@ -62,8 +65,11 @@
     <string name="location_class">Ученики</string>
     <string name="location_profile">Мой профиль</string>
     <string name="location_add_pupil">Добавить ученика</string>
+    <string name="location_add_subject">Добавить предмет</string>
     <string name="admin_location_teachers">Учителя</string>
     <string name="admin_location_pupils">Ученики</string>
+    <string name="admin_location_subjects">Предметы</string>
+    <string name="admin_location_schedule">Расписание</string>
 
     <!-- Strings for tests -->
     <string name="received_uids">Найдены карты:</string>
