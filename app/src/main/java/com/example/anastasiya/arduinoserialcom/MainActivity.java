@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
+import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
@@ -20,7 +21,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.anastasiya.arduinoserialcom.helpers.AlertManager;
 import com.example.anastasiya.arduinoserialcom.helpers.FileLogger;
+import com.example.anastasiya.arduinoserialcom.routers.IAsyncResponse;
+import com.example.anastasiya.arduinoserialcom.routers.ScheduleHttpRequestTask;
 import com.felhr.usbserial.UsbSerialDevice;
 import com.felhr.usbserial.UsbSerialInterface;
 
@@ -29,11 +33,14 @@ import java.util.Iterator;
 import java.io.UnsupportedEncodingException;
 import android.os.Handler;
 
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
     private Context context;
     private Activity activity;
 
     private FileLogger fileLogger;
+    private AlertManager alertManager;
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
@@ -50,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
     Handler handler;
     String data = null;
     String teacher_uid = null;
+    String teacherId = null;
+    String lessonInfo;
     Boolean activityIsActive = true;
 
     @Override
@@ -59,9 +68,12 @@ public class MainActivity extends AppCompatActivity {
         activity = this;
         context = activity.getApplicationContext();
         fileLogger = FileLogger.getInstance(this.getApplicationContext(), this);
+        alertManager = AlertManager.getInstance(activity);
 
         final Intent intent = getIntent();
         teacher_uid = intent.getStringExtra("teacher_uid");
+        teacherId = intent.getStringExtra("teacherId");
+
         fileLogger.writeToLogFile("main activity for teacher with uid: " + teacher_uid);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -94,6 +106,32 @@ public class MainActivity extends AppCompatActivity {
         readerInfo = (TextView) findViewById(R.id.readerInfo);
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
         handler = new Handler();
+
+        ScheduleHttpRequestTask asyncTask = new ScheduleHttpRequestTask(new IAsyncResponse() {
+            @Override
+            public void processFinish(Object output) {
+                JSONObject response = null;
+
+                if(((JSONObject) output).isNull("data")) {
+                    alertManager.show("Уроков нет", "На данный момент в вашем расписании отсутствуют уроки.");
+                } else {
+                    try {
+                        response = ((JSONObject) output).getJSONObject("data");
+                        lessonInfo = response.getString("subjectName")
+                                + ", " + response.getString("className")
+                                + ", " + response.getString("roomName")
+                                + ", " + response.getString("weekDay")
+                                + " " + response.getString("time");
+                        fileLogger.writeToLogFile(lessonInfo);
+                        alertManager.show("Идет урок.", lessonInfo);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }, context, activity);
+        asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getCurrentByTeacher", teacherId);
         connectUsbDevice();
     }
 

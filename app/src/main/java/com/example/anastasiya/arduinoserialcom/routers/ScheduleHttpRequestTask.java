@@ -1,23 +1,27 @@
 package com.example.anastasiya.arduinoserialcom.routers;
 
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.example.anastasiya.arduinoserialcom.helpers.AlertManager;
 import com.example.anastasiya.arduinoserialcom.helpers.FileLogger;
-import com.example.anastasiya.arduinoserialcom.services.TeacherService;
+import com.example.anastasiya.arduinoserialcom.services.ScheduleService;
 
-public class TeacherHttpRequestTask extends AsyncTask<String, Object, Object>{
-    private TeacherService teacherService;
+public class ScheduleHttpRequestTask extends AsyncTask<String, Object, Object> {
+    private ScheduleService scheduleService;
     private FileLogger fileLogger;
+    private AlertManager alertManager;
 
     IAsyncResponse delegate = null;
 
 
-    public TeacherHttpRequestTask(IAsyncResponse delegate, Context context, Activity activity) {
+    public ScheduleHttpRequestTask(IAsyncResponse delegate, Context context, Activity activity) {
         this.delegate = delegate;
-        teacherService = TeacherService.getInstance(context, activity);
+        scheduleService = ScheduleService.getInstance(context, activity);
         fileLogger = FileLogger.getInstance(context, activity);
+        alertManager = AlertManager.getInstance(activity);
     }
 
     @Override
@@ -30,14 +34,15 @@ public class TeacherHttpRequestTask extends AsyncTask<String, Object, Object>{
         Object response = null;
         String methodName = params[0];
         try {
+            //alertManager.show(methodName, "TEST");
             switch (methodName) {
-                case "getScheduleByUID":
-                    String uid = params[1];
-                    response = teacherService.getScheduleByUid(uid);
+                case "getCurrentByTeacher":
+                    String id = params[1];
+                    //alertManager.show(id, "TEST");
+                    response = scheduleService.getCurrentByTeacher(id);
                     break;
-                case "getTeacherByUID":
-                    uid = params[1];
-                    response = teacherService.getTeacherByUid(uid);
+                case "getAll":
+                    response = scheduleService.getAll();
                     break;
             }
 

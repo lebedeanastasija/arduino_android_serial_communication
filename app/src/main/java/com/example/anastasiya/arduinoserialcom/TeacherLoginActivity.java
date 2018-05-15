@@ -112,7 +112,9 @@ public class TeacherLoginActivity extends AppCompatActivity {
                         try {
                              if(((JSONObject)output).getJSONObject("data") != null) {
                                  fileLogger.writeToLogFile("Card is registered.");
+                                 String teacherId = ((JSONObject)output).getJSONObject("data").getString("id");
                                  Intent intent = new Intent(TeacherLoginActivity.this, MainActivity.class);
+                                 intent.putExtra("teacherId", teacherId);
                                  intent.putExtra("teacher_uid", data);
                                  startActivity(intent);
                                  TeacherLoginActivity.this.finish();
