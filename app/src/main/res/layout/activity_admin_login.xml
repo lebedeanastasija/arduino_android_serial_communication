@@ -3,9 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.anastasiya.arduinoserialcom.AdminLoginActivity">
+    tools:context="com.example.anastasiya.arduinoserialcom.AdminLoginActivity"
+    android:background="@drawable/background1">
 
     <TextView
+        android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_centerHorizontal="true"
@@ -14,8 +16,8 @@
         android:layout_marginTop="10dp"
         android:text="@string/sign_in"
         android:textAlignment="center"
-        android:textSize="24sp"
-        android:id="@+id/textView6" />
+        android:textColor="@color/colorWhite"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/textView2"
@@ -30,6 +32,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="50dp"
         android:text="@string/prompt_login"
+        android:textColor="@color/colorWhite"
         android:textSize="18sp"
         tools:layout_editor_absoluteX="54dp"
         tools:layout_editor_absoluteY="85dp" />
@@ -40,7 +43,9 @@
         android:layout_height="40dp"
         android:layout_below="@+id/textView2"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
+        android:layout_marginRight="20dp"
+        android:textColor="@color/colorWhite"
+        android:theme="@android:style/Widget.DeviceDefault.Light.EditText" />
 
     <TextView
         android:id="@+id/textView3"
@@ -53,10 +58,12 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
         android:text="@string/prompt_password"
+        android:textColor="@color/colorWhite"
         android:textSize="18sp" />
 
     <EditText
         android:id="@+id/etPassword"
+        style="@style/Widget.AppCompat.Light.AutoCompleteTextView"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"

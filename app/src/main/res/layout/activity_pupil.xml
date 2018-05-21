@@ -10,175 +10,264 @@
 
     <ImageView
         android:id="@+id/image_pupil"
-        android:layout_width="99dp"
-        android:layout_height="144dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         app:srcCompat="@mipmap/ic_person_black_24dp"
-        android:layout_marginTop="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/tvScoreType"
-        android:layout_alignStart="@+id/tvScoreType" />
+        android:layout_above="@+id/tvTSubject"
+        android:layout_toLeftOf="@+id/tvSurname"
+        android:layout_toStartOf="@+id/tvSurname" />
 
     <TextView
         android:id="@+id/tvSurname"
         android:layout_width="200dp"
         android:layout_height="28dp"
         android:text="@string/surname"
-        android:layout_alignTop="@+id/image_pupil"
-        android:layout_toRightOf="@+id/image_pupil"
-        android:layout_toEndOf="@+id/image_pupil"
-        android:layout_marginLeft="17dp"
-        android:layout_marginStart="17dp" />
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/spMarkTypes"
+        android:layout_alignEnd="@+id/spMarkTypes"
+        android:layout_marginTop="13dp" />
 
     <TextView
         android:id="@+id/tvName"
         android:layout_width="200dp"
         android:layout_height="28dp"
+        android:text="@string/name"
+        android:textAlignment="center"
+        android:textSize="24sp"
         android:layout_below="@+id/tvSurname"
-        android:layout_marginTop="10dp"
-        android:layout_toEndOf="@+id/image_pupil"
         android:layout_toRightOf="@+id/image_pupil"
-        android:layout_alignLeft="@+id/tvSurname"
-        android:layout_alignStart="@+id/tvSurname"
-        android:text="@string/name" />
+        android:layout_toEndOf="@+id/image_pupil"
+        android:layout_marginTop="14dp" />
 
     <TextView
         android:id="@+id/tvPatronymic"
         android:layout_width="200dp"
         android:layout_height="28dp"
         android:text="@string/patronymic"
-        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:layout_marginTop="13dp"
         android:layout_below="@+id/tvName"
-        android:layout_alignLeft="@+id/tvName"
-        android:layout_alignStart="@+id/tvName" />
+        android:layout_toRightOf="@+id/image_pupil"
+        android:layout_toEndOf="@+id/image_pupil" />
 
     <TextView
         android:id="@+id/tvClass"
         android:layout_width="200dp"
         android:layout_height="28dp"
-        android:text="@string/school_class"
         android:layout_alignBottom="@+id/image_pupil"
-        android:layout_alignLeft="@+id/tvName"
-        android:layout_alignStart="@+id/tvName" />
+        android:layout_alignEnd="@+id/spSubjects"
+        android:layout_alignRight="@+id/spSubjects"
+        android:text="@string/school_class"
+        android:textAlignment="center"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tvTSubject"
         android:layout_width="125dp"
-        android:layout_height="23dp"
+        android:layout_height="24dp"
+        android:layout_above="@+id/spMarkTypes"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:text="@string/subject"
-        android:layout_marginBottom="20dp"
-        android:layout_above="@+id/tvScoreType"
-        android:layout_alignLeft="@+id/tvScoreType"
-        android:layout_alignStart="@+id/tvScoreType"
-        android:layout_alignRight="@+id/tvClass"
-        android:layout_alignEnd="@+id/tvClass" />
+        android:textAlignment="textEnd"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/tvScoreType"
         android:layout_width="96dp"
-        android:layout_height="31dp"
+        android:layout_height="24dp"
+        android:layout_above="@+id/tvScore"
+        android:layout_alignEnd="@+id/tvScore"
+        android:layout_alignRight="@+id/tvScore"
         android:text="@string/score_type"
-        android:layout_marginLeft="39dp"
-        android:layout_marginStart="39dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-   <!-- <RadioButton
-        android:id="@+id/rbClassWork"
-        android:layout_width="126dp"
-        android:layout_height="29dp"
-        android:text="@string/class_work"
-        android:layout_below="@+id/tvScoreType"
-        android:layout_alignLeft="@+id/rbControlWork"
-        android:layout_alignStart="@+id/rbControlWork"
-        android:layout_marginTop="11dp" />
-
-    <RadioButton
-        android:id="@+id/rbControlWork"
-        android:layout_width="100dp"
-        android:layout_height="25dp"
-        android:text="@string/control_work"
-        android:layout_alignLeft="@+id/tvClass"
-        android:layout_alignStart="@+id/tvClass"
-        android:layout_alignBottom="@+id/tvScoreType"
-        android:layout_alignTop="@+id/tvScoreType" />
-
-    <RadioButton
-        android:id="@+id/rbTestWork"
-        android:layout_width="123dp"
-        android:layout_height="28dp"
-        android:text="@string/test_work"
-        android:layout_toRightOf="@+id/rbControlWork"
-        android:layout_marginLeft="11dp"
-        android:layout_marginStart="11dp"
-        android:layout_alignRight="@+id/tvTSubject"
-        android:layout_alignEnd="@+id/tvTSubject"
-        android:layout_alignBottom="@+id/rbControlWork"
-        android:layout_alignTop="@+id/rbControlWork" />-->
-
-    <RadioGroup
-        android:layout_width="120dp"
-        android:layout_height="80dp"
-        android:id="@+id/rgScoreType"
-        android:layout_below="@+id/tvScoreType"
-        android:layout_toLeftOf="@+id/tvClass"
-        android:layout_toStartOf="@+id/tvClass"
-        android:layout_marginTop="10dp">
-
-        <RadioButton
-            android:id="@+id/rbClassWork"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:onClick="onRadioButtonClicked"
-            android:text="@string/class_work" />
-
-        <RadioButton android:id="@+id/rbTestWork"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:text="@string/test_work"
-            android:onClick="onRadioButtonClicked"/>
-
-        <RadioButton
-            android:id="@+id/rbHomeWork"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:onClick="onRadioButtonClicked"
-            android:text="@string/home_work" />
-    </RadioGroup>
+        android:textAlignment="textEnd"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/tvScore"
         android:layout_width="99dp"
-        android:layout_height="23dp"
+        android:layout_height="30dp"
         android:text="@string/score"
-        android:layout_alignBaseline="@+id/tvScoreType"
-        android:layout_alignBottom="@+id/tvScoreType"
-        android:layout_toRightOf="@+id/rgScoreType"
-        android:layout_toEndOf="@+id/rgScoreType"
-        android:layout_marginLeft="31dp"
-        android:layout_marginStart="31dp" />
-
-    <NumberPicker
-        android:id="@+id/npScore"
-        android:layout_width="38dp"
-        android:layout_height="60dp"
-        android:layout_below="@+id/tvScoreType"
-        android:layout_alignLeft="@+id/tvScore"
-        android:layout_alignStart="@+id/tvScore"
-        android:layout_marginTop="16dp" />
+        android:textAlignment="textEnd"
+        android:textSize="24sp"
+        android:layout_above="@+id/btnMark1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/tvTSubject"
+        android:layout_alignEnd="@+id/tvTSubject" />
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="@android:color/holo_green_dark"
         android:text="@string/save"
         android:textColor="@android:color/white"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="26dp"
-        android:layout_alignLeft="@+id/rgScoreType"
-        android:layout_alignStart="@+id/rgScoreType"
-        android:layout_alignRight="@+id/tvTSubject"
-        android:layout_alignEnd="@+id/tvTSubject" />
+        android:textSize="24sp" />
+
+    <Spinner
+        android:id="@+id/spSubjects"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/tvName"
+        android:layout_alignRight="@+id/tvName"
+        android:layout_alignTop="@+id/tvTSubject"
+        android:layout_marginLeft="150dp" />
+
+    <Spinner
+        android:id="@+id/spMarkTypes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvScoreType"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="150dp"
+        android:layout_marginRight="10dp" />
+
+    <Button
+        android:id="@+id/btnMark1"
+        android:layout_width="95dp"
+        android:layout_height="60dp"
+        android:onClick="setMark"
+        android:text="1"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/btnMark5"
+        android:layout_alignTop="@+id/btnMark2" />
+
+    <Button
+        android:id="@+id/btnMark2"
+        android:layout_width="95dp"
+        android:layout_height="60dp"
+        android:layout_above="@+id/btnMark6"
+        android:layout_toEndOf="@+id/btnMark1"
+        android:layout_toRightOf="@+id/btnMark1"
+        android:onClick="setMark"
+        android:text="2"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/btnMark3"
+        android:layout_width="95dp"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@+id/btnMark2"
+        android:layout_alignTop="@+id/btnMark2"
+        android:layout_toEndOf="@+id/btnMark2"
+        android:layout_toRightOf="@+id/btnMark2"
+        android:onClick="setMark"
+        android:text="3"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/btnMark4"
+        android:layout_width="95dp"
+        android:layout_height="60dp"
+        android:layout_above="@+id/btnMark8"
+        android:layout_toEndOf="@+id/btnMark3"
+        android:layout_toRightOf="@+id/btnMark3"
+        android:onClick="setMark4"
+        android:text="4"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/btnMark5"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:layout_alignLeft="@+id/btnMark1"
+        android:layout_alignStart="@+id/btnMark1"
+        android:layout_toLeftOf="@+id/btnMark2"
+        android:layout_toStartOf="@+id/btnMark2"
+        android:onClick="setMark5"
+        android:text="5"
+        android:textSize="24sp"
+        android:layout_above="@+id/btnMark9"
+        android:layout_below="@+id/btnMark4" />
+
+    <Button
+        android:id="@+id/btnMark6"
+        android:layout_width="95dp"
+        android:layout_height="60dp"
+        android:layout_toLeftOf="@+id/btnMark3"
+        android:layout_toRightOf="@+id/btnMark1"
+        android:layout_toStartOf="@+id/btnMark3"
+        android:onClick="setMark6"
+        android:text="6"
+        android:textSize="24sp"
+        android:layout_above="@+id/btnMark9"
+        android:layout_alignTop="@+id/btnMark5" />
+
+    <Button
+        android:id="@+id/btnMark7"
+        android:layout_width="95dp"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@+id/btnMark6"
+        android:layout_below="@+id/btnMark2"
+        android:layout_toLeftOf="@+id/btnMark4"
+        android:layout_toRightOf="@+id/btnMark2"
+        android:layout_toStartOf="@+id/btnMark4"
+        android:onClick="setMark7"
+        android:text="7"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/btnMark8"
+        android:layout_width="95dp"
+        android:layout_height="60dp"
+        android:onClick="setMark8"
+        android:text="8"
+        android:textSize="24sp"
+        android:layout_above="@+id/btnMark10"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/btnMark9"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:onClick="setMark9"
+        android:text="9"
+        android:textSize="24sp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/button"
+        android:layout_toLeftOf="@+id/btnMark10"
+        android:layout_toStartOf="@+id/btnMark10" />
+
+    <Button
+        android:id="@+id/btnMark10"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:onClick="setMark10"
+        android:text="10"
+        android:textSize="24sp"
+        android:layout_toRightOf="@+id/btnMark6"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/button"
+        android:layout_alignTop="@+id/btnMark9" />
+
+    <TextView
+        android:id="@+id/tvScoreValue"
+        android:layout_width="wrap_content"
+        android:layout_height="23dp"
+        android:text="1"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_alignBottom="@+id/tvScore"
+        android:layout_below="@+id/spMarkTypes"
+        android:layout_toRightOf="@+id/tvTSubject"
+        android:layout_toLeftOf="@+id/tvClass"
+        android:layout_toStartOf="@+id/tvClass" />
 
 </RelativeLayout>

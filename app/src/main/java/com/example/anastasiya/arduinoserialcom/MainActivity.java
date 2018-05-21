@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     String teacher_uid = null;
     String teacherId = null;
     String lessonInfo;
+    String subjectName = null;
     Boolean activityIsActive = true;
 
     @Override
@@ -113,17 +114,18 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject response = null;
 
                 if(((JSONObject) output).isNull("data")) {
-                    alertManager.show("Уроков нет", "На данный момент в вашем расписании отсутствуют уроки.");
+                    alertManager.show("Уроков нет!", "На данный момент в вашем расписании отсутствуют уроки.");
                 } else {
                     try {
                         response = ((JSONObject) output).getJSONObject("data");
                         lessonInfo = response.getString("subjectName")
                                 + ", " + response.getString("className")
-                                + ", " + response.getString("roomName")
-                                + ", " + response.getString("weekDay")
-                                + " " + response.getString("time");
+                                + "\n" + response.getString("roomName")
+                                + "\n" + response.getString("weekDay")
+                                + " " + response.getString("time") + "";
+                        subjectName = response.getString("subjectName");
                         fileLogger.writeToLogFile(lessonInfo);
-                        alertManager.show("Идет урок.", lessonInfo);
+                        alertManager.show("Идет урок!", lessonInfo);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -216,6 +218,7 @@ public class MainActivity extends AppCompatActivity {
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.putExtra("uid", data);
+                            intent.putExtra("subjectName", subjectName);
                             startActivity(intent);
                         }
                     }, 500);
