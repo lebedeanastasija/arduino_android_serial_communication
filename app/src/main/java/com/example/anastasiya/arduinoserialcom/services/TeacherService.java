@@ -30,7 +30,7 @@ public class TeacherService implements Response.Listener<JSONObject>, Response.E
         fileLogger = FileLogger.getInstance(context, activity);
     }
 
-    public Object getScheduleByUid(String uid) throws InterruptedException {
+    public Object getLessonByUid(String uid) throws InterruptedException {
         responseObject = null;
         String url = res.getString(R.string.server_address) + "/schedules/teacher/" + uid;
         CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method.GET, url, new JSONObject(), this, this);

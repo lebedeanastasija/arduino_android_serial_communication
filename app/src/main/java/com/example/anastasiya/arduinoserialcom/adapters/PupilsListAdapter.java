@@ -43,13 +43,14 @@ public class PupilsListAdapter extends RecyclerView.Adapter<PupilsListAdapter.Vi
 
             mTextView = (TextView) v.findViewById(R.id.tvPupilItem);
             mImageView = (ImageView) v.findViewById(R.id.ivPupilItem);
-            mImageButton = (ImageButton) v.findViewById(R.id.ibDeletePupil);
-            mImageButton.setOnClickListener(new View.OnClickListener() {
+            // TODO: uncomment for admin
+            //mImageButton = (ImageButton) v.findViewById(R.id.ibDeletePupil);
+            /*mImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                    removeClickListener.onClick(v, getAdapterPosition());
                 }
-            });
+            });*/
         }
 
         public void setItemClickListener(ItemClickListener itemClickListener) {
@@ -73,6 +74,16 @@ public class PupilsListAdapter extends RecyclerView.Adapter<PupilsListAdapter.Vi
         mAvatarIds = avatarIds;
         context = ctx;
         res = context.getResources();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return Integer.parseInt(mPupilIds.get(position));
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override

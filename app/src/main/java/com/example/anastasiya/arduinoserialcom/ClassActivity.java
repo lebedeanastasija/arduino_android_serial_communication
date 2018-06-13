@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
 
 import com.example.anastasiya.arduinoserialcom.adapters.PupilsListAdapter;
 import com.example.anastasiya.arduinoserialcom.helpers.FileLogger;
@@ -23,6 +24,7 @@ import java.util.List;
 
 public class ClassActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
+    private TextView tvClass;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -49,6 +51,7 @@ public class ClassActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.rvClass);
         mLayoutManager = new LinearLayoutManager(context);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        tvClass = (TextView) findViewById(R.id.tvClassName);
 
         getPupils();
     }
@@ -64,6 +67,11 @@ public class ClassActivity extends AppCompatActivity {
             @Override
             public void processFinish(Object output) {
                 try {
+                    if (!((JSONObject) output).getJSONObject("data").isNull("className")) {
+                        tvClass.setText("Класс: " + ((JSONObject) output).getJSONObject("data").getString("className"));
+                    } else {
+                        tvClass.setText("");
+                    }
                     final String classId = ((JSONObject) output).getJSONObject("data").getJSONObject("class").getString("id");
                     PupilHttpRequestTask asyncTask2 = new PupilHttpRequestTask(new IAsyncResponse() {
                         @Override

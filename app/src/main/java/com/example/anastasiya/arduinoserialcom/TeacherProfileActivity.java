@@ -25,7 +25,8 @@ public class TeacherProfileActivity extends AppCompatActivity {
     TextView tSurname;
     TextView tPatronymic;
     TextView tUID;
-    TextView tSubject;
+    //TextView tSubject;
+    TextView tvClass;
     ImageView tImage;
 
     @Override
@@ -36,7 +37,8 @@ public class TeacherProfileActivity extends AppCompatActivity {
         tName = (TextView)findViewById(R.id.tvTName);
         tSurname = (TextView)findViewById(R.id.tvTSurname);
         tPatronymic = (TextView)findViewById(R.id.tvTPatronymic);
-        tSubject = (TextView)findViewById(R.id.tvTSubject);
+        //tSubject = (TextView)findViewById(R.id.tvTSubject);
+        tvClass = (TextView)findViewById(R.id.tvTClass);
         tImage = (ImageView)findViewById(R.id.image_teacher);
 
         Intent intent = getIntent();
@@ -52,12 +54,17 @@ public class TeacherProfileActivity extends AppCompatActivity {
                     tName.setText(((JSONObject) output).getJSONObject("data").getString("name"));
                     tSurname.setText(((JSONObject) output).getJSONObject("data").getString("surname"));
                     tPatronymic.setText(((JSONObject) output).getJSONObject("data").getString("patronymic"));
-                    if (!((JSONObject) output).getJSONObject("data").isNull("subjectId")) {
+                    /*if (!((JSONObject) output).getJSONObject("data").isNull("subjectId")) {
                         tSubject.setText("Предмет: " + ((JSONObject) output).getJSONObject("data").getJSONObject("subject").getString("name"));
                     } else {
                         tSubject.setText("");
-                    }
+                    }*/
 
+                    if (!((JSONObject) output).getJSONObject("data").isNull("className")) {
+                        tvClass.setText("Классный руководитель " + ((JSONObject) output).getJSONObject("data").getString("className") + " класса.");
+                    } else {
+                        tvClass.setText("");
+                    }
                     String url = res.getString(R.string.server_address) + "/teachers/avatar/" +
                             ((JSONObject) output).getJSONObject("data").getString("avatarId");
                     Picasso.with(context)

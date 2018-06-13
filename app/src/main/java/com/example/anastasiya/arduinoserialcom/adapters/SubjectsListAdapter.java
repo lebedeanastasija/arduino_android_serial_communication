@@ -118,4 +118,14 @@ public class SubjectsListAdapter extends RecyclerView.Adapter<SubjectsListAdapte
     public int getItemCount() {
         return mSubjectNames.size();
     }
+
+    @Override
+    public long getItemId(int position) {
+        return Integer.parseInt(mSubjectIds.get(position));
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 }

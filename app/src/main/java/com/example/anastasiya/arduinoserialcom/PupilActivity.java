@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.anastasiya.arduinoserialcom.helpers.AlertManager;
 import com.example.anastasiya.arduinoserialcom.helpers.FileLogger;
+import com.example.anastasiya.arduinoserialcom.routers.MarkHttpRequestTask;
 import com.example.anastasiya.arduinoserialcom.routers.PupilHttpRequestTask;
 import com.example.anastasiya.arduinoserialcom.routers.IAsyncResponse;
 import com.squareup.picasso.Picasso;
@@ -46,6 +47,9 @@ public class PupilActivity extends AppCompatActivity {
     TextView tvScoreValue;
     ImageView imvPupil;
 
+    Boolean attendanceCreated = false;
+    Boolean pupilFound = false;
+
     Spinner spSubjects;
     Spinner spMarkTypes;
 
@@ -54,6 +58,7 @@ public class PupilActivity extends AppCompatActivity {
     Integer scoreType = 1;
     Integer scoreValue = 1;
     String subjectName;
+    String pupilId = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +73,6 @@ public class PupilActivity extends AppCompatActivity {
         tvName = (TextView) findViewById(R.id.tvName);
         tvSurname = (TextView) findViewById(R.id.tvSurname);
         tvPatronymic = (TextView) findViewById(R.id.tvPatronymic);
-        tvClass = (TextView) findViewById(R.id.tvClass);
         tvScoreValue = (TextView) findViewById(R.id.tvScoreValue);
         imvPupil = (ImageView) findViewById(R.id.image_pupil);
 
@@ -83,23 +87,44 @@ public class PupilActivity extends AppCompatActivity {
             @Override
             public void processFinish(Object output) {
                 try {
+                    if(!((JSONObject)output).getJSONObject("data").isNull("id")) {
+                        pupilFound = true;
+                        pupilId = ((JSONObject)output).getJSONObject("data").getString("id");
+
+                        if(!((JSONObject)output).getJSONObject("data").isNull("attendance")) {
+                           attendanceCreated = true;
+                        };
+                    }
+
+                    if(pupilFound) {
+                        if(attendanceCreated) {
+                            alertManager.show("Отметка о присутствии:", "Выставлена успешна.");
+                        } else {
+                            alertManager.show("Отметка о присутствии:", "Не выставлена. В расписании отсутствуют занятия на данное время.");
+                        }
+                    } else {
+                        alertManager.show("Ученик не найден:", "В системе отсутствуют ученики с такой картой.");
+                    }
+
                     tvName.setText(((JSONObject) output).getJSONObject("data").getString("name"));
                     tvSurname.setText(((JSONObject) output).getJSONObject("data").getString("surname"));
                     tvPatronymic.setText(((JSONObject) output).getJSONObject("data").getString("patronymic"));
-                    tvClass.setText("Класс: 1A");
                     String url = res.getString(R.string.server_address) + "/pupils/avatar/" +
                             ((JSONObject) output).getJSONObject("data").getString("avatarId");
-                   fileLogger.writeToLogFile("\nURL AVATAR:\n" + url + "\n");
+                    fileLogger.writeToLogFile("\nURL AVATAR:\n" + url + "\n");
                     Picasso
                     .with(context)
                     .load(url)
                     .into(imvPupil);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         }, context, activity);
+
         asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getPupilByUid", uid);
+
         setSubjects();
         setMarkTypes();
     }
@@ -145,48 +170,18 @@ public class PupilActivity extends AppCompatActivity {
         tvScoreValue.setText(b.getText().toString());
     }
 
-    public void setMark2(View v) {
-        this.scoreValue = 2;
-        tvScoreValue.setText("2");
-    }
+    public void saveMark(View v) {
+        if(pupilId == null || pupilId.equals(JSONObject.NULL) || pupilId.isEmpty()) {
+            alertManager.show("Оценка не может быть выставлена:", "Ученик с данной картой отсутствует в системе.");
+        } else {
+            MarkHttpRequestTask asyncTask = new MarkHttpRequestTask(new IAsyncResponse() {
+                @Override
+                public void processFinish(Object output) {
+                    alertManager.show("Оценка:", "Оценка выставлена ученику успешно.");
+                }
+            }, context, activity);
 
-    public void setMark3(View v) {
-        this.scoreValue = 3;
-        tvScoreValue.setText("3");
-    }
-
-    public void setMark4(View v) {
-        this.scoreValue = 4;
-        tvScoreValue.setText("4");
-    }
-
-    public void setMark5(View v) {
-        this.scoreValue = 5;
-        tvScoreValue.setText("5");
-    }
-
-    public void setMark6(View v) {
-        this.scoreValue = 6;
-        tvScoreValue.setText("6");
-    }
-
-    public void setMark7(View v) {
-        this.scoreValue = 7;
-        tvScoreValue.setText("7");
-    }
-
-    public void setMark8(View v) {
-        this.scoreValue = 8;
-        tvScoreValue.setText("8");
-    }
-
-    public void setMark9(View v) {
-        this.scoreValue = 9;
-        tvScoreValue.setText("9");
-    }
-
-    public void setMark10(View v) {
-        this.scoreValue = 10;
-        tvScoreValue.setText("10");
+            asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "create", pupilId, "1", scoreValue.toString(), "1", "");
+        }
     }
 }

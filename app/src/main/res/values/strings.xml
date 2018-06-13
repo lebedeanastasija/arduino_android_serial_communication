@@ -63,6 +63,7 @@
     <string name="location_main">Главная</string>
     <string name="location_pupil">Выставление оценки</string>
     <string name="location_class">Ученики</string>
+    <string name="location_schedule">Расписание</string>
     <string name="location_profile">Мой профиль</string>
     <string name="location_add_pupil">Добавить ученика</string>
     <string name="location_add_subject">Добавить предмет</string>

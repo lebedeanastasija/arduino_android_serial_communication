@@ -8,69 +8,82 @@
 
     <ImageView
         android:id="@+id/image_teacher"
-        android:layout_width="250dp"
-        android:layout_height="310dp"
-        android:layout_below="@+id/tvTSubject"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/tvTClass"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="26dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/background"
         android:baselineAlignBottom="true"
-        app:srcCompat="@mipmap/ic_person_black_24dp" />
+        app:srcCompat="@drawable/background" />
 
     <TextView
         android:id="@+id/tvTSurname"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="25dp"
 
-        android:layout_alignEnd="@+id/image_teacher"
         android:layout_alignLeft="@+id/image_teacher"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/image_teacher"
         android:layout_alignStart="@+id/image_teacher"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:textAlignment="center"
         android:textSize="18sp"
+        android:textStyle="bold"
         tools:text="@string/surname" />
 
     <TextView
         android:id="@+id/tvTName"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:layout_alignEnd="@+id/tvTSurname"
-        android:layout_alignLeft="@+id/tvTSurname"
-        android:layout_alignRight="@+id/tvTSurname"
-        android:layout_alignStart="@+id/tvTSurname"
-        android:layout_below="@+id/tvTSurname"
-        android:layout_marginTop="10dp"
+        android:layout_alignBaseline="@+id/tvTSurname"
+        android:layout_alignBottom="@+id/tvTSurname"
+        android:layout_toEndOf="@+id/tvTSurname"
+        android:layout_toRightOf="@+id/tvTSurname"
+        android:paddingLeft="10dp"
         android:text="@string/name"
         android:textAlignment="center"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvTPatronymic"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:layout_alignEnd="@+id/tvTName"
-        android:layout_alignLeft="@+id/tvTName"
-        android:layout_alignRight="@+id/tvTName"
-        android:layout_alignStart="@+id/tvTName"
-        android:layout_below="@+id/tvTName"
-        android:layout_marginTop="14dp"
+        android:layout_alignBaseline="@+id/tvTName"
+        android:layout_alignBottom="@+id/tvTName"
+        android:layout_toEndOf="@+id/tvTName"
+        android:layout_toRightOf="@+id/tvTName"
+        android:paddingLeft="10dp"
         android:text="@string/patronymic"
         android:textAlignment="center"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+   <!-- <TextView
+        android:id="@+id/tvTSubject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/image_teacher"
+        android:layout_alignStart="@+id/image_teacher"
+        android:layout_below="@+id/tvTSurname"
+        android:layout_centerVertical="false"
+        android:layout_marginTop="5dp"
+        android:text="@string/subject"
+        android:textStyle="bold" />-->
 
     <TextView
-        android:id="@+id/tvTSubject"
-        android:layout_width="150dp"
-        android:layout_height="25dp"
-        android:layout_alignEnd="@+id/tvTPatronymic"
-        android:layout_alignLeft="@+id/tvTPatronymic"
-        android:layout_alignRight="@+id/tvTPatronymic"
-        android:layout_alignStart="@+id/tvTPatronymic"
-        android:layout_below="@+id/tvTPatronymic"
-        android:layout_marginTop="18dp"
-        android:text="@string/subject"
-        android:textAlignment="center"
+        android:id="@+id/tvTClass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/image_teacher"
+        android:layout_alignStart="@+id/image_teacher"
+        android:layout_below="@+id/tvTSurname"
+        android:layout_margin="5dp"
+        android:text="@string/school_class"
         android:textStyle="bold" />
 
 </RelativeLayout>

@@ -22,16 +22,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".TeacherLoginActivity"
             android:label="@string/teacher"
@@ -40,6 +39,7 @@
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>
+
             <meta-data
                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                 android:resource="@xml/device_filter" />
@@ -47,7 +47,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".LoginActivity" />
         </activity>
-
         <activity
             android:name=".MainActivity"
             android:label="@string/location_main"
@@ -56,11 +55,11 @@
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>
+
             <meta-data
                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                 android:resource="@xml/device_filter" />
         </activity>
-
         <activity
             android:name=".PupilActivity"
             android:label="@string/location_pupil"
@@ -70,7 +69,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-
         <activity
             android:name=".ClassActivity"
             android:label="@string/location_class"
@@ -81,7 +79,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-
+        <activity
+            android:name=".ScheduleActivity"
+            android:label="@string/location_schedule"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         <activity
             android:name=".TeacherProfileActivity"
             android:label="@string/location_profile"
@@ -91,7 +98,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-
         <activity
             android:name=".AddPupilActivity"
             android:label="@string/location_add_pupil"
@@ -101,7 +107,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ClassActivity" />
         </activity>
-
         <activity
             android:name=".AdminLoginActivity"
             android:label="@string/admin"
@@ -111,13 +116,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".LoginActivity" />
         </activity>
-
         <activity
             android:name=".AdminMainActivity"
             android:label="@string/location_main"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".PupilsActivity"
             android:label="@string/admin_location_pupils"
@@ -128,7 +131,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".AdminMainActivity" />
         </activity>
-
         <activity
             android:name=".SubjectsActivity"
             android:label="@string/admin_location_subjects"
@@ -138,7 +140,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".AdminMainActivity" />
         </activity>
-
         <activity
             android:name=".AddSubjectActivity"
             android:label="@string/location_add_subject"

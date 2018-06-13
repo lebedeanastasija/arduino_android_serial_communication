@@ -98,6 +98,11 @@ public class MainActivity extends AppCompatActivity {
                         class_intent.putExtra("teacher_uid", teacher_uid);
                         startActivity(class_intent);
                         break;
+                    case R.id.nav_schedule:
+                        Intent schedule_intent = new Intent(MainActivity.this, ScheduleActivity.class);
+                        schedule_intent.putExtra("teacherId", teacherId);
+                        startActivity(schedule_intent);
+                        break;
                 }
                 return false;
             }
@@ -141,12 +146,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         activityIsActive = false;
+        disconnectUsbDevice();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         activityIsActive = true;
+        connectUsbDevice();
     }
 
     @Override

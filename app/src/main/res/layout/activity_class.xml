@@ -5,13 +5,25 @@
     android:layout_height="match_parent"
     tools:context="com.example.anastasiya.arduinoserialcom.ClassActivity">
 
+    <TextView
+        android:id="@+id/tvClassName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Класс: "
+        android:textAlignment="center"
+        android:textColor="@color/colorBlack"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvClass"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:scrollbars="vertical">
+        android:background="@drawable/background"
+        android:scrollbars="vertical"
+        android:layout_below="@+id/tvClassName">
+
     </android.support.v7.widget.RecyclerView>
 </RelativeLayout>

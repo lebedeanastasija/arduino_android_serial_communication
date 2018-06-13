@@ -32,17 +32,18 @@ public class ScheduleHttpRequestTask extends AsyncTask<String, Object, Object> {
     @Override
     protected Object doInBackground(String... params) {
         Object response = null;
+        String teacherId = null;
         String methodName = params[0];
         try {
             //alertManager.show(methodName, "TEST");
             switch (methodName) {
                 case "getCurrentByTeacher":
-                    String id = params[1];
-                    //alertManager.show(id, "TEST");
-                    response = scheduleService.getCurrentByTeacher(id);
+                    teacherId = params[1];
+                    response = scheduleService.getCurrentByTeacher(teacherId);
                     break;
-                case "getAll":
-                    response = scheduleService.getAll();
+                case "getDayByTeacher":
+                    teacherId = params[1];
+                    response = scheduleService.getDayByTeacher(teacherId);
                     break;
             }
 

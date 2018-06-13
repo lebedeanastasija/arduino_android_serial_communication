@@ -31,7 +31,7 @@ public class MarkHttpRequestTask extends AsyncTask<String, Object, Object>{
 
         //try {
             switch (methodName) {
-                case "createMark":
+                case "create":
                     Integer pupilId = Integer.parseInt(params[1]);
                     Integer typeId = Integer.parseInt(params[2]);
                     Integer valueId = Integer.parseInt(params[3]);
@@ -45,7 +45,7 @@ public class MarkHttpRequestTask extends AsyncTask<String, Object, Object>{
                         scheduleId = Integer.parseInt(params[5]);
                     }
 
-                    response = markService.create(pupilId, valueId, typeId, subjectId, scheduleId);
+                    response = markService.create(pupilId, typeId, valueId, subjectId, scheduleId);
                     break;
             }
 

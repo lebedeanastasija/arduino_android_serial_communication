@@ -28,12 +28,13 @@ public class TeacherHttpRequestTask extends AsyncTask<String, Object, Object>{
     @Override
     protected Object doInBackground(String... params) {
         Object response = null;
+        String uid = null;
         String methodName = params[0];
         try {
             switch (methodName) {
-                case "getScheduleByUID":
-                    String uid = params[1];
-                    response = teacherService.getScheduleByUid(uid);
+                case "getLessonByUID":
+                    uid = params[1];
+                    response = teacherService.getLessonByUid(uid);
                     break;
                 case "getTeacherByUID":
                     uid = params[1];

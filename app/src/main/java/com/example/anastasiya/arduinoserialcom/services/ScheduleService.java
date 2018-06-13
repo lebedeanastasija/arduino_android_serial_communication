@@ -76,6 +76,29 @@ public class ScheduleService implements Response.Listener<JSONObject>, Response.
         }
     }
 
+    public Object getDayByTeacher(String id) throws  InterruptedException {
+        responseObject = null;
+
+        String url = res.getString(R.string.server_address) + "/schedules/day/teacher/" + id;
+        fileLogger.writeToLogFile("GET: " + url);
+        CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method.GET, url, new JSONObject(), this, this);
+        jsonRequest.setTag(REQUEST_TAG);
+        mQueue.add(jsonRequest);
+        synchronized (syncObject) {
+            try {
+                fileLogger.writeToLogFile("Waiting for response...");
+                syncObject.wait();
+                return responseObject;
+            } catch (InterruptedException e) {
+                fileLogger.writeToLogFile("Error:" + e.getMessage());
+                return new VolleyError("Error occurred");
+            } catch (Exception e) {
+                fileLogger.writeToLogFile("Error:" + e.getMessage());
+                return new VolleyError("Error occurred");
+            }
+        }
+    }
+
     @Override
     public void onResponse(JSONObject response) {
         fileLogger.writeToLogFile("On response!");
